@@ -206,3 +206,88 @@ exports.addExp = function(req, res, next) {
     });
 
 };
+
+
+/**
+ * add user's experience
+ * upgrage level if needed
+ */
+exports.addExp = function(req, res, next) {
+    var epUser = new EventProxy();
+
+    User.findById(req.user.id,
+        function(err, user) {
+            if (err) {
+                res.json(Results.ERR_DB_ERR);
+                return;
+            } else if (user == null) {
+                res.json(Results.ERR_NOTFOUND_ERR);
+                return;
+            } else {
+                epUser.emit("findUser", user);
+            }
+        });
+
+    epUser.all("findUser", function(user) {
+
+        var exp = req.param('exp');
+        var pre_exp = user.experience
+        user.experience = (pre_exp + exp) % exp_plevel;
+        user.level += parseInt((pre_exp + exp) / exp_plevel);
+        
+        user.save(function(err, user) {
+
+            if (err) {
+                console.log(err);
+                return next();
+            } else {
+
+                res.json({
+                    result: true,
+                    exp: user.experience,
+                    level: user.level
+                });
+
+            }
+        });
+    });
+
+};
+
+/**
+ * change user's password
+ */
+exports.changePwd = function(req, res, next) {
+    var epUser = new EventProxy();
+
+    User.findById(req.user.id,
+        function(err, user) {
+            if (err) {
+                res.json(Results.ERR_DB_ERR);
+                return;
+            } else if (user == null) {
+                res.json(Results.ERR_NOTFOUND_ERR);
+                return;
+            } else {
+                epUser.emit("findUser", user);
+            }
+        });
+
+    epUser.all("findUser", function(user) {
+        user.password = md5(req.param('password'));
+        user.save(function(err, user) {
+
+            if (err) {
+                console.log(err);
+                return next();
+            } else {
+
+                res.json({
+                    result: true,
+                });
+
+            }
+        });
+    });
+
+};

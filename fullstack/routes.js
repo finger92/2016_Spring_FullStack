@@ -11,6 +11,7 @@ module.exports = function(app) {
     app.get('/doLogout', sign.ensureAuthenticated, sign.logout);
     app.get('/getSelf', sign.ensureAuthenticated, userRoute.getSelf);
     app.put('/addExp', sign.ensureAuthenticated, userRoute.addExp);
+    app.put('/changePwd', sign.ensureAuthenticated, userRoute.changePwd);
     
     // admin
     app.post('/admin', adminRoute.createAdmin);
