@@ -15,7 +15,7 @@ var AdminSchema = new Schema({
 	
 	username: {
 		type: String,
-		default: ''
+		default: 'admin'
 	}
 });
 

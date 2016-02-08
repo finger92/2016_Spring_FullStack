@@ -8,10 +8,23 @@ var bodyParser = require('body-parser');
 var session = require('express-session');
 var MongoStore = require('connect-mongo')(session);
 var _ = require('lodash');
+var passport = require('passport');
+var flash = require('connect-flash');
+var LocalStrategy = require('passport-local').Strategy;
+var md5 = require('MD5');
 
 var config = require('./config');
-var routes = require('./routes');
+var _ = require('lodash');
+
 var app = express();
+var routes = require('./routes');
+//var authUser = require('./common/auth.js');
+var crypto = require('crypto');
+var multer = require('multer');
+
+var compress = require('compression');
+
+app.use(compress());
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
@@ -31,8 +44,7 @@ app.use(session({
     }),
     // cookie: { maxAge: 60000,secure: true },
     cookie: {
-        maxAge: 43200000,
-        domain: 'localhost'
+        maxAge: 1000 * 60 * 15
     },
     resave: true,
     saveUninitialized: true,
@@ -41,6 +53,87 @@ app.use(session({
 // set config file
 var config = require('./config');
 var _ = require('lodash');
+
+var allowCrossDomain = function(req, res, next) {
+    res.header("Access-Control-Allow-Credentials", true);
+}
+
+app.use(function(req, res, next) {
+    res.header("Access-Control-Allow-Origin", req.headers.origin);
+    res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept, authorization,X-Prototype-Version,Allow,*, Content-Length");
+    res.header("Access-Control-Allow-Credentials", true);
+    res.header("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS, HEAD");
+    next();
+});
+
+// Initialize Passport!  Also use passport.session() middleware, to support
+// persistent login sessions (recommended).
+app.use(flash());
+app.use(passport.initialize());
+app.use(passport.session());
+//app.use(authUser.authUser);
+
+// Passport session setup.
+//   To support persistent login sessions, Passport needs to be able to
+//   serialize users into and deserialize users out of the session.  Typically,
+//   this will be as simple as storing the user ID when serializing, and finding
+//   the user by ID when deserializing.
+passport.serializeUser(function(user, done) {
+    //res.locals.current_user
+    done(null, user.id);
+});
+
+passport.deserializeUser(function(id, done) {
+    User.findById(id, function(err, user) {
+        done(err, user);
+    });
+});
+
+// Use the LocalStrategy within Passport.
+//   Strategies in passport require a `verify` function, which accept
+//   credentials (in this case, a username and password), and invoke a callback
+//   with a user object.  In the real world, this would query a database;
+//   however, in this example we are using a baked-in set of users.
+var User = require('./models').User;
+passport.use(new LocalStrategy({
+        usernameField: 'email',
+        passwordField: 'password',
+        badRequestMessage: 'ERR_MISSING_CREDENTIALS'
+    },
+    function(email, password, done) {
+        // asynchronous verification, for effect...
+        process.nextTick(function() {
+
+            // Find the user by username.  If there is no user with the given
+            // username, or the password is not correct, set the user to `false` to
+            // indicate failure and set a flash message.  Otherwise, return the
+            // authenticated `user`.
+            User.findOne({
+                email: email.toLowerCase()
+            }, function(err, user) {
+                if (err) {
+                    console.log(err);
+                    return done(err);
+                }
+                if (!user) {
+                    return done(null, false, 'ERR_INVALID_USER');
+                }
+                if (user.password != md5(password)) {
+                    return done(null, false, 'ERR_INVALID_PASSWORD');
+                }
+                
+                // var auth_token = encrypt(user._id + '\t' + user.pass + '\t' + user.email, config.session_secret);
+
+                // res.cookie(config.auth_cookie_name, auth_token, {
+                //     path: '/',
+                //     maxAge: 1000 * 60 * 60 * 24
+                // }); //cookie 有效期1天
+                
+                return done(null, user);
+            })
+        });
+    }
+));
 
 // set route
 routes(app);
@@ -56,6 +149,28 @@ app.use(function(req, res, next) {
 _.extend(app.locals, {
     config: config
 });
+
+function encrypt(str, secret) {
+    var cipher = crypto.createCipher('aes192', secret);
+    var enc = cipher.update(str, 'utf8', 'hex');
+    enc += cipher.final('hex');
+    return enc;
+}
+
+function decrypt(str, secret) {
+    var decipher = crypto.createDecipher('aes192', secret);
+    var dec = decipher.update(str, 'hex', 'utf8');
+    dec += decipher.final('utf8');
+    return dec;
+}
+
+function md5(str) {
+    var md5sum = crypto.createHash('md5');
+    md5sum.update(str);
+    str = md5sum.digest('hex');
+    return str;
+}
+
 
 // error handlers
 

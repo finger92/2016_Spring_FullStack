@@ -23,13 +23,14 @@ exports.createAdmin = function(req, res, next) {
         return res.json(Results.ERR_DATAFORMAT_ERR);
     }
     admin.password = req.body.password;
+    admin.username = req.body.username;
     var randomstring = require("randomstring");
     if (tools.isEmpty(admin.email) || tools.isEmpty(admin.password)) {
         return res.json(Results.ERR_PARAM_ERR);
     }
     admin.password = md5(admin.password);
     var ep = new EventProxy();
-    ep.all('checkEmail', function() {
+    ep.all('success', function() {
         admin.save(function(err, admin) {
             if (err) {
                 console.log(err);
@@ -53,7 +54,7 @@ exports.createAdmin = function(req, res, next) {
         if (item != null) {
             ep.emit("error", 'ERR_EXISTED_EMAIL ');
         } else {
-            ep.emit('checkEmail');
+            ep.emit('success');
         }
     });
 };
