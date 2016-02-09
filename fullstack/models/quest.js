@@ -1,30 +1,31 @@
 var mongoose = require('mongoose');
 var Schema = mongoose.Schema;
 
-var UserSchema = new Schema({
-    email: {
+var QuestSchema = new Schema({
+    title: {
 		type: String,
-		index: {
-			unique: true
-		}
 	},
     
-    username: {
+    content: {
 		type: String
 	},
     
-	password: {
+	u_name: {
 		type: String
 	},
+    
+    u_level: {
+        type: Number
+    },
 	
-	experience: {
+	answ_num: {
 		type: Number,
 		default: 0
 	},
     
-    level:{
+    view_num:{
         type: Number,
-        default: 1
+        default: 0
     },
     
     create_time:{
@@ -33,5 +34,5 @@ var UserSchema = new Schema({
     }
 });
 
-mongoose.model('User', UserSchema);
-exports.User = mongoose.model('User');
+mongoose.model('Quest', QuestSchema);
+exports.Quest = mongoose.model('Quest');

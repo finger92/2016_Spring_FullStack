@@ -11,7 +11,8 @@ mongoose.connect(config.db, function (err) {
 // models
 require('./admin.js');
 require('./user.js');
-
+require('./quest.js');
 
 exports.Admin = mongoose.model('Admin');
 exports.User = mongoose.model('User');
+exports.Quest = mongoose.model('Quest');

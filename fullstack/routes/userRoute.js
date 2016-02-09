@@ -116,8 +116,8 @@ exports.createUser = function(req, res, next) {
 
     User.findOne({
         email: user.email
-    }, function(err, item) {
-        if (item != null) {
+    }, function(err, user) {
+        if (user != null) {
             ep.emit("error", 'ERR_EXISTED_EMAIL ');
         } else {
             ep.emit('success');
@@ -160,53 +160,6 @@ exports.getSelf = function(req, res, next) {
         return;
     }
 };
-
-/**
- * add user's experience
- * upgrage level if needed
- */
-exports.addExp = function(req, res, next) {
-    var epUser = new EventProxy();
-
-    User.findById(req.user.id,
-        function(err, user) {
-            if (err) {
-                res.json(Results.ERR_DB_ERR);
-                return;
-            } else if (user == null) {
-                res.json(Results.ERR_NOTFOUND_ERR);
-                return;
-            } else {
-                epUser.emit("findUser", user);
-            }
-        });
-
-    epUser.all("findUser", function(user) {
-
-        var exp = req.param('exp');
-        var pre_exp = user.experience
-        user.experience = (pre_exp + exp) % exp_plevel;
-        user.level += parseInt((pre_exp + exp) / exp_plevel);
-        
-        user.save(function(err, user) {
-
-            if (err) {
-                console.log(err);
-                return next();
-            } else {
-
-                res.json({
-                    result: true,
-                    exp: user.experience,
-                    level: user.level
-                });
-
-            }
-        });
-    });
-
-};
-
 
 /**
  * add user's experience
