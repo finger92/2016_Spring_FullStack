@@ -8,6 +8,7 @@ var EventProxy = require('eventproxy');
 var tools = require('../common/tools');
 var Results = require('./commonResult');
 var User = require('../models').User;
+var NotiCenter = require('../models').NotiCenter;
 var adminRoute = require('./adminRoute');
 var fs = require('fs');
 
@@ -149,6 +150,7 @@ exports.getSelf = function(req, res, next) {
                             email: user.email,
                             experience: user.experience,
                             level: user.level,
+                            noti_num: user.noti_num,
                             create_time: user.create_time
                         }
                     });
@@ -243,4 +245,60 @@ exports.changePwd = function(req, res, next) {
         });
     });
 
+};
+
+
+/**
+ * get notifications
+ */
+exports.getNotifications = function(req, res, next) {
+    var userId = req.user.id;
+    if (userId) {
+        User.findById(userId,
+            function(err, user) {
+                if (err) {
+                    res.json(Results.ERR_DB_ERR);
+                    return;
+                } else if (user == null) {
+                    res.json(Results.ERR_NOTFOUND_ERR);
+                    return;
+                } else {
+                    NotiCenter.find({u_id: userId}, '')
+                        .sort({
+                            create_time: 'desc'
+                        }).exec(function(err, quests) {
+                            if (err) {
+                                res.json(Results.ERR_DB_ERR);
+                                return;
+                            } else if (!quests.length) {
+                                res.json(Results.ERR_NOTFOUND_ERR);
+                                return;
+                            } else {
+                                res.json({
+                                    result: true,
+                                    data: quests
+                                });
+                                return;
+                            }
+                        })
+                    res.json({
+                        result: true,
+                        data: {
+                            id: user.id,
+                            //email: user.email,
+                            username: user.username,
+                            email: user.email,
+                            experience: user.experience,
+                            level: user.level,
+                            noti_num: user.noti_num,
+                            create_time: user.create_time
+                        }
+                    });
+                    return;
+                }
+            });
+    } else {
+        res.json(Results.ERR_REQUIRELOGIN_ERR);
+        return;
+    }
 };

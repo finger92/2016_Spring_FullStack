@@ -27,6 +27,11 @@ var UserSchema = new Schema({
         default: 1
     },
     
+    noti_num:{
+        type:Number,
+        default: 0
+    },
+    
     create_time:{
         type: Date,
         default: Date.now
