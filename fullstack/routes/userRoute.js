@@ -165,7 +165,7 @@ exports.getSelf = function(req, res, next) {
 
 /**
  * add user's experience
- * upgrage level if needed
+ * upgrade level if needed
  */
 exports.addExp = function(req, res, next) {
     var epUser = new EventProxy();
@@ -263,38 +263,24 @@ exports.getNotifications = function(req, res, next) {
                     res.json(Results.ERR_NOTFOUND_ERR);
                     return;
                 } else {
-                    NotiCenter.find({u_id: userId}, '')
+                    NotiCenter.find({u_id: userId}, 'id quest_id quest_title quest_create')
                         .sort({
                             create_time: 'desc'
-                        }).exec(function(err, quests) {
+                        }).exec(function(err, noti) {
                             if (err) {
                                 res.json(Results.ERR_DB_ERR);
                                 return;
-                            } else if (!quests.length) {
+                            } else if (!noti.length) {
                                 res.json(Results.ERR_NOTFOUND_ERR);
                                 return;
                             } else {
                                 res.json({
                                     result: true,
-                                    data: quests
+                                    data: noti
                                 });
                                 return;
                             }
                         })
-                    res.json({
-                        result: true,
-                        data: {
-                            id: user.id,
-                            //email: user.email,
-                            username: user.username,
-                            email: user.email,
-                            experience: user.experience,
-                            level: user.level,
-                            noti_num: user.noti_num,
-                            create_time: user.create_time
-                        }
-                    });
-                    return;
                 }
             });
     } else {

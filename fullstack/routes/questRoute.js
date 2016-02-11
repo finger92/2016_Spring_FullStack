@@ -67,7 +67,7 @@ exports.getQuestList = function(req, res, next) {
             } else if (!quests.length) {
                 res.json(Results.ERR_NOTFOUND_ERR);
                 return;
-            } else {
+            } else {    
                 res.json({
                     result: true,
                     data: quests
@@ -75,6 +75,66 @@ exports.getQuestList = function(req, res, next) {
                 return;
             }
         })
+};
+
+/**
+ * get questions list
+ */
+exports.getQuestById = function(req, res, next) {
+    
+    Quest.findById(req.param('id'),
+        function(err, quest) {
+            if (err) {
+                res.json(Results.ERR_DB_ERR);
+                return;
+            } else if (quest == null) {
+                res.json(Results.ERR_NOTFOUND_ERR);
+                return;
+            } else {
+                res.json({
+                    result: true,
+                    data: {
+                        id: quest.id,
+                        title: quest.title,
+                        content: quest.content,
+                        u_name: quest.u_name,
+                        u_level: quest.u_level,
+                        answ_num: quest.answ_num,
+                        view_time: quest.view_time,
+                        create_time: quest.create_time
+                    }
+                });
+                return;
+            };
+        });
+
+};
+
+/**
+ * get hot questions list
+ */
+exports.getHotQuestList = function(req, res, next) {
+    
+    var query = Quest.find({},'id title content u_name u_level answ_num view_num create_time')
+        .sort({
+            answ_num: 'desc'
+        }).limit(10)
+        .exec(function(err, quests) {
+            if (err) {
+                res.json(Results.ERR_DB_ERR);
+                return;
+            } else if (!quests.length) {
+                res.json(Results.ERR_NOTFOUND_ERR);
+                return;
+            } else {    
+                res.json({
+                    result: true,
+                    data: quests
+                });
+                return;
+            }
+        });
+    
 };
 
 /**
