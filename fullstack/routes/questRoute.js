@@ -11,6 +11,7 @@ var User = require('../models').User;
 var Quest = require('../models').Quest;
 var adminRoute = require('./adminRoute');
 var fs = require('fs');
+var Library = require('../common/library.js');
 
 /**
  * post question 
@@ -57,9 +58,9 @@ exports.postQuest = function(req, res, next) {
  */
 exports.getQuestList = function(req, res, next) {
 
-    Quest.find({}, 'id title content u_name u_level answ_num view_num create_time')
+    Quest.find({}, 'id title content u_name u_level answ_num view_num last_act last_act_time create_time')
         .sort({
-            create_time: 'desc'
+            create_time: 'last_act_time'
         }).exec(function(err, quests) {
             if (err) {
                 res.json(Results.ERR_DB_ERR);
@@ -101,6 +102,8 @@ exports.getQuestById = function(req, res, next) {
                         u_level: quest.u_level,
                         answ_num: quest.answ_num,
                         view_time: quest.view_time,
+                        last_act: quest.last_act,
+                        last_act_time: quest.last_act_time,
                         create_time: quest.create_time
                     }
                 });
@@ -115,9 +118,9 @@ exports.getQuestById = function(req, res, next) {
  */
 exports.getHotQuestList = function(req, res, next) {
     
-    var query = Quest.find({},'id title content u_name u_level answ_num view_num create_time')
+    var query = Quest.find({},'id title content u_name u_level answ_num view_num last_act last_act_time create_time')
         .sort({
-            answ_num: 'desc'
+            last_act_time: 'desc'
         }).limit(10)
         .exec(function(err, quests) {
             if (err) {
@@ -158,7 +161,7 @@ exports.addViewerNum = function(req, res, next) {
 
     epQuest.all("findQuest", function(quest) {
 
-        quest.view_num += 1;
+        quest.view_num = Library.addNum(quest.view_num, 1);
         quest.save(function(err, quest) {
 
             if (err) {
@@ -197,7 +200,7 @@ exports.addAnswerNum = function(req, res, next) {
 
     epQuest.all("findQuest", function(quest) {
 
-        quest.answ_num += 1;
+        quest.answ_num = Library.addNum(quest.answ_num, 1);
         quest.save(function(err, quest) {
 
             if (err) {
@@ -214,3 +217,6 @@ exports.addAnswerNum = function(req, res, next) {
     });
 
 };
+
+ 
+        

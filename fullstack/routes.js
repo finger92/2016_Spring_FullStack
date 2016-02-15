@@ -22,9 +22,4 @@ module.exports = function(app) {
     
     // admin
     app.post('/admin', adminRoute.createAdmin);
-    
-    // root
-    app.get('/', function(req, res) {
-        res.render('index',{ title: 'Express' });
-    });
 }

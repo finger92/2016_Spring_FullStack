@@ -24,6 +24,11 @@ var AnswSchema = new Schema({
 		default: 0
 	},
     
+    vote_num: {
+		type: Number,
+		default: 0
+	},
+    
     create_time:{
         type: Date,
         default: Date.now

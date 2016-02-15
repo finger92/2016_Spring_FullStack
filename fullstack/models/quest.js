@@ -28,6 +28,16 @@ var QuestSchema = new Schema({
         default: 0
     },
     
+    last_act:{
+        type: String,
+        default: 'Created'
+    }, 
+    
+    last_act_time:{
+        type: Date,
+        default: Date.now
+    },
+    
     create_time:{
         type: Date,
         default: Date.now

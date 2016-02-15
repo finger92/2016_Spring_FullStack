@@ -11,29 +11,9 @@ var User = require('../models').User;
 var NotiCenter = require('../models').NotiCenter;
 var adminRoute = require('./adminRoute');
 var fs = require('fs');
-
 var passport = require('passport');
-
 var md5 = require('MD5');
-var exp_plevel = 5;
-
-exports.test = function(req, res, next) {
-    res.json(Results.ERR_DB_ERR);
-};
-
-/**
- * ensure operation happend after user login
- */
-exports.ensureAuthenticated = function(req, res, next) {
-    if (req.isAuthenticated()) {
-        return next();
-    }
-    res.json({
-        result: false,
-        err: 'ERR_NOT_ALLOWED'
-    });
-
-};
+var Library = require('../common/library.js');
 
 /**
  * user login
@@ -54,10 +34,6 @@ exports.login = function(req, res, next) {
             if (err) {
                 return next(err);
             }
-
-            var user = {};
-            user.id = req.user._id;
-            user.username = req.user.username;
 
             return res.json({
                 id: user.id,
@@ -102,7 +78,8 @@ exports.createUser = function(req, res, next) {
                 res.json({
                     result: true,
                     id: user.id
-                });   
+                }); 
+                return;
             }
             
         });
@@ -185,11 +162,7 @@ exports.addExp = function(req, res, next) {
 
     epUser.all("findUser", function(user) {
 
-        var exp = req.param('exp');
-        var pre_exp = user.experience
-        user.experience = (pre_exp + exp) % exp_plevel;
-        user.level += parseInt((pre_exp + exp) / exp_plevel);
-        
+        user = Library.addUserExp(user, req.param('exp'));
         user.save(function(err, user) {
 
             if (err) {
@@ -202,7 +175,7 @@ exports.addExp = function(req, res, next) {
                     exp: user.experience,
                     level: user.level
                 });
-
+                return;
             }
         });
     });

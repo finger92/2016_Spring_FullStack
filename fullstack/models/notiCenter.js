@@ -12,7 +12,8 @@ var NotiCenterSchema = new Schema({
     },
     
     quest_create: {
-        type: Date
+        type: Date,
+        default: Date.now
     },
     
     quest_id: {
