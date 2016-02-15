@@ -35,5 +35,5 @@ var AnswSchema = new Schema({
     }
 });
 
-mongoose.model('Answ', QuestSchema);
+mongoose.model('Answ', AnswSchema);
 exports.Answ = mongoose.model('Answ');

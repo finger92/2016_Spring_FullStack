@@ -12,7 +12,13 @@ mongoose.connect(config.db, function (err) {
 require('./admin.js');
 require('./user.js');
 require('./quest.js');
+require('./answ.js');
+require('./comnt.js');
+require('./notiCenter');
 
 exports.Admin = mongoose.model('Admin');
 exports.User = mongoose.model('User');
 exports.Quest = mongoose.model('Quest');
+exports.Answ = mongoose.model('Answ');
+exports.Comnt = mongoose.model('Comnt');
+exports.NotiCenter = mongoose.model('NotiCenter');

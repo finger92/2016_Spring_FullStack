@@ -26,5 +26,5 @@ var ComntSchema = new Schema({
     }
 });
 
-mongoose.model('Comnt', QuestSchema);
+mongoose.model('Comnt', ComntSchema);
 exports.Comnt = mongoose.model('Comnt');

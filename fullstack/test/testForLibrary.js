@@ -40,6 +40,6 @@ exports.testAddVote = function(test){
 };
 
 exports.testGetDateDis  = function(test){
-    Library.getDateDis(ISODate("2016-02-06T19:36:53.557Z"));
-
+    Library.getDateDis(1);
+test.done();
 }

@@ -23,6 +23,6 @@ exports.addVote = function(pre_vote, vote_num, vote){
 // return the date distance
 exports.getDateDis = function(date){
     var dis = 1;
-    console.log(date);
+    console.log(Date.now());
     return;
 }

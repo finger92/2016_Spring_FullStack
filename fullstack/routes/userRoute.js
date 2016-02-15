@@ -28,7 +28,6 @@ exports.login = function(req, res, next) {
                 result: false,
                 err: info
             });
-            //return res.redirect('/m_login_failure?callback='+req.body.callback);
         }
         req.logIn(user, function(err) {
             if (err) {
@@ -224,36 +223,25 @@ exports.changePwd = function(req, res, next) {
 /**
  * get notifications
  */
-exports.getNotifications = function(req, res, next) {
+exports.getNoti = function(req, res, next) {
     var userId = req.user.id;
     if (userId) {
-        User.findById(userId,
-            function(err, user) {
+        NotiCenter.find({u_id: userId}, 'id quest_id quest_title quest_create')
+            .sort({
+                create_time: 'desc'
+            }).exec(function(err, noti) {
                 if (err) {
                     res.json(Results.ERR_DB_ERR);
                     return;
-                } else if (user == null) {
+                } else if (!noti.length) {
                     res.json(Results.ERR_NOTFOUND_ERR);
                     return;
                 } else {
-                    NotiCenter.find({u_id: userId}, 'id quest_id quest_title quest_create')
-                        .sort({
-                            create_time: 'desc'
-                        }).exec(function(err, noti) {
-                            if (err) {
-                                res.json(Results.ERR_DB_ERR);
-                                return;
-                            } else if (!noti.length) {
-                                res.json(Results.ERR_NOTFOUND_ERR);
-                                return;
-                            } else {
-                                res.json({
-                                    result: true,
-                                    data: noti
-                                });
-                                return;
-                            }
-                        })
+                    res.json({
+                        result: true,
+                        data: noti
+                    });
+                    return;
                 }
             });
     } else {

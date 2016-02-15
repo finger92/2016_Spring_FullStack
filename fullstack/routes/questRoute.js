@@ -60,7 +60,7 @@ exports.getQuestList = function(req, res, next) {
 
     Quest.find({}, 'id title content u_name u_level answ_num view_num last_act last_act_time create_time')
         .sort({
-            create_time: 'last_act_time'
+            last_act_time: 'desc'
         }).exec(function(err, quests) {
             if (err) {
                 res.json(Results.ERR_DB_ERR);
