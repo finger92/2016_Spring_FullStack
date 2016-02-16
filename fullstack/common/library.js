@@ -19,10 +19,3 @@ exports.addNum = function(pre_num, adder){
 exports.addVote = function(pre_vote, vote_num, vote){
     return (pre_vote * vote_num + vote)/(vote_num + 1);
 }
-
-// return the date distance
-exports.getDateDis = function(date){
-    var dis = 1;
-    console.log(Date.now());
-    return;
-}

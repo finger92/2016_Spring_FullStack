@@ -11,14 +11,18 @@ var ComntSchema = new Schema({
 		type: String
 	},
     
+    u_id: {
+        type: Schema.ObjectId,
+		ref: 'User' 
+    },
+    
 	u_name: {
 		type: String
 	},
     
-	vote: {
-		type: Number,
-		default: 0
-	},
+    u_level: {
+        type: Number
+    },
     
     create_time:{
         type: Date,

@@ -10,7 +10,6 @@ var Results = require('./commonResult');
 var User = require('../models').User;
 var Answ = require('../models').Answ;
 var Quest = require('../models').Quest;
-var NotiCenter = require('../models').NotiCenter;
 var adminRoute = require('./adminRoute');
 var fs = require('fs');
 var Library = require('../common/library.js');
@@ -22,9 +21,12 @@ exports.postAnsw = function(req, res, next) {
     var ep = new EventProxy();
     var userId = req.user.id;
     var quest_id = req.param('quest_id');
-    var notiCenter = new NotiCenter();
     
     if (userId) {
+        if(tools.isEmpty(req.param('content'))){
+            res.json(Results.ERR_PARAM_ERR);
+            return;
+        }
         ep.emit('post_answer');
     } else {
         ep.emit("error", 'ERR_REQUIRELOGIN_ERR');
@@ -41,6 +43,7 @@ exports.postAnsw = function(req, res, next) {
                     var answ = new Answ();
                     answ.quest_id = quest_id;
                     answ.content = req.param('content');
+                    answ.u_id = userId;
                     answ.u_name = user.username;
                     answ.u_level = user.level;
                     answ.save(function(err, answ) {
@@ -64,35 +67,22 @@ exports.postAnsw = function(req, res, next) {
                 } else if (quest == null) {
                     ep.emit("error", 'ERR_NOTFOUND_ERR');
                 } else {
-                    quest.last_act = 'Answered';
                     quest.last_act_time = Date.now;
-                    notiCenter.quest_title = quest.title;
+                    quest.answ_num = Library.addNum(quest.answ_num, 1);
+
                     answ.save(function(err, answ) {
                         if (err) {
                             console.log(err);
                             return next();
                         } else {
-                            ep.emit("add_notify");  
+                            res.json({
+                                result: true
+                            });
+                            return; 
                         }
                     });
                 };
             });
-    });
-    
-    ep.all('add_notify', function() {
-        notiCenter.u_id = userId;
-        notiCenter.quest_id = quest_id;
-        notiCenter.save(function(err, noti) {
-            if (err) {
-                console.log(err);
-                return next();
-            } else {
-                res.json({
-                    result: true
-                });
-                return;
-            }
-        });
     });
     
     ep.fail(function(err) {

@@ -10,6 +10,11 @@ var QuestSchema = new Schema({
 		type: String
 	},
     
+    u_id: {
+        type: Schema.ObjectId,
+		ref: 'User' 
+    },
+    
 	u_name: {
 		type: String
 	},
@@ -27,11 +32,6 @@ var QuestSchema = new Schema({
         type: Number,
         default: 0
     },
-    
-    last_act:{
-        type: String,
-        default: 'Created'
-    }, 
     
     last_act_time:{
         type: Date,

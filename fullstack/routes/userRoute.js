@@ -8,7 +8,6 @@ var EventProxy = require('eventproxy');
 var tools = require('../common/tools');
 var Results = require('./commonResult');
 var User = require('../models').User;
-var NotiCenter = require('../models').NotiCenter;
 var adminRoute = require('./adminRoute');
 var fs = require('fs');
 var passport = require('passport');
@@ -126,7 +125,6 @@ exports.getSelf = function(req, res, next) {
                             email: user.email,
                             experience: user.experience,
                             level: user.level,
-                            noti_num: user.noti_num,
                             create_time: user.create_time
                         }
                     });
@@ -186,7 +184,12 @@ exports.addExp = function(req, res, next) {
  */
 exports.changePwd = function(req, res, next) {
     var epUser = new EventProxy();
-
+    
+    if(tools.isEmpty(req.param('password'))){
+        res.json(Results.ERR_PARAM_ERR);
+        return;  
+    }
+    
     User.findById(req.user.id,
         function(err, user) {
             if (err) {
@@ -217,35 +220,4 @@ exports.changePwd = function(req, res, next) {
         });
     });
 
-};
-
-
-/**
- * get notifications
- */
-exports.getNoti = function(req, res, next) {
-    var userId = req.user.id;
-    if (userId) {
-        NotiCenter.find({u_id: userId}, 'id quest_id quest_title quest_create')
-            .sort({
-                create_time: 'desc'
-            }).exec(function(err, noti) {
-                if (err) {
-                    res.json(Results.ERR_DB_ERR);
-                    return;
-                } else if (!noti.length) {
-                    res.json(Results.ERR_NOTFOUND_ERR);
-                    return;
-                } else {
-                    res.json({
-                        result: true,
-                        data: noti
-                    });
-                    return;
-                }
-            });
-    } else {
-        res.json(Results.ERR_REQUIRELOGIN_ERR);
-        return;
-    }
 };

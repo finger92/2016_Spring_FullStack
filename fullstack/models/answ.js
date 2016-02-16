@@ -11,6 +11,11 @@ var AnswSchema = new Schema({
 		type: String
 	},
     
+    u_id: {
+        type: Schema.ObjectId,
+		ref: 'User' 
+    },
+    
 	u_name: {
 		type: String
 	},
