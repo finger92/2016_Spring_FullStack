@@ -2,9 +2,7 @@ hereseasApp.factory('userService', function ($http, $state, $cookies) {
 
 
     var userService = this;
-    var host = "http://127.0.0.1";
-    //var host = "http://api.hereseas.com";
-    
+    var host = "http://127.0.0.1";    
     var toSignup = false;
     var toLogin = false;
 
@@ -19,14 +17,6 @@ hereseasApp.factory('userService', function ($http, $state, $cookies) {
         return host;
     };
     
-    
-    this.setSignupOrLogin = function(state){
-        signupOrLogin = state;
-    };
-    
-    this.getSignupOrLogin = function(){
-        return signupOrLogin;
-    };
 
     return userService;
 });

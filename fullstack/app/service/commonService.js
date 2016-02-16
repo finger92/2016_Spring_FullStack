@@ -9,27 +9,6 @@ var errResponseHandler = function (res) {
     };
 };
 
-fakesoApp.factory('alertService', function ($http,$mdDialog) {
-    return {
-        alert: function (msg, $event) {
-            //console.log("$event",$event);
-            var mAlert = $mdDialog.alert()
-                .parent(angular.element(document.body))
-                .title('hereseas')
-                .content(msg)
-                .ariaLabel('Alert Dialog Demo')
-                .clickOutsideToClose(true)
-                .ok('转到');
-
-            if($event){
-                mAlert.targetEvent($event);
-            }
-
-            return $mdDialog.show(mAlert);
-        }
-    };
-});
-
 
 fakesoApp.factory('dateService', function () {
     return {
