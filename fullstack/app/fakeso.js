@@ -1,5 +1,5 @@
 var fakesoApp = angular.module('fakesoApp', [
-    'ui.router'
+    'ui.router','ngResource'
 ]);
 
 fakesoApp.config(function ($stateProvider, $urlRouterProvider, $httpProvider) {
@@ -19,6 +19,33 @@ fakesoApp.config(function ($stateProvider, $urlRouterProvider, $httpProvider) {
         controller: 'ErrorController'
     });
     
+    $stateProvider.state('questlist', {
+        url: '/quests',
+        templateUrl: '/app/view/questlist.html',
+        controller: 'QuestController'
+    });
+    
+    $stateProvider.state('quest', {
+        url: '/quest/:qstId',
+        templateUrl: '/app/view/question.html',
+        controller: 'QuestController'
+    });
+    
+    $stateProvider.state('signup', {
+        url: '/signup',
+        templateUrl: '/app/view/signup.html',
+        controller: 'AccountController'
+    });
+    
+    $stateProvider.state('login', {
+        url: '/login',
+        templateUrl: '/app/view/login.html',
+        controller: 'AccountController'
+    });
+    
+    $stateProvider.state('postqst', {
+        url: '/postqst',
+        templateUrl: '/app/view/post-quest.html',
+        controller: 'QuestController'
+    });
 });
-
-fakesoApp.controller

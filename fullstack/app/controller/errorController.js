@@ -1,3 +1,3 @@
-fakesoApp.controller('ErrorController',function($scope, userService, alertService, $state, $mdDialog){
+fakesoApp.controller('ErrorController',function($scope, userService, alertService, $state){
     console.log(Error);
 });

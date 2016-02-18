@@ -1,3 +1,3 @@
-fakesoApp.controller('HomeController',function($scope, userService, alertService, $state, $mdDialog){
+fakesoApp.controller('HomeController',function($scope, userService, $state){
     
 });

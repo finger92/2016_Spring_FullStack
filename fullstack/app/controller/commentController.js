@@ -1,4 +1,4 @@
-hereseasApp.controller('CommentController', function($scope,$state,$window, requestService, userService, $mdDialog, $cookies,alertService){
+fakesoApp.controller('CommentController', function($scope,$state,$window, requestService, userService){
         
     $scope.comment = {
         answ_id: '',

@@ -23,7 +23,7 @@ fakesoApp.factory('dateService', function () {
 
 
 
-hereseasApp.factory('requestService', ['$resource','userService', function($resource,userService){
+fakesoApp.factory('requestService', ['$resource','userService', function($resource,userService){
     var host = userService.getHost()+'/';
     
     return $resource(host+':dir/:action/:id/:search', {dir: "@dir", id: "@id", action:"@action"}, {

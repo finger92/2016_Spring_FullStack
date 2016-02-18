@@ -1,4 +1,4 @@
-hereseasApp.controller('AswController', function($scope,$state,$window, requestService, userService, $mdDialog, $cookies,alertService){
+fakesoApp.controller('AswController', function($scope,$state,$window, requestService, userService){
         
     $scope.answer = {
         quest_id: '',

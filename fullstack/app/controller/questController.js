@@ -1,4 +1,4 @@
-hereseasApp.controller('QuestController', function($scope,$state,$window, requestService, userService, $mdDialog, $cookies,alertService){
+fakesoApp.controller('QuestController', function($scope,$state,$window, requestService, userService){
         
     $scope.quest = {
         title: '',
@@ -12,4 +12,9 @@ hereseasApp.controller('QuestController', function($scope,$state,$window, reques
         create_time: '',
     };
     
+    $scope.doPostPst = function(){
+        requestService.PostQuest($scope.quest,function(res){
+            console.log(res.result);
+        });
+    }
 });

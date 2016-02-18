@@ -1,4 +1,4 @@
-hereseasApp.factory('userService', function ($http, $state, $cookies) {
+fakesoApp.factory('userService', function ($http, $state) {
 
 
     var userService = this;
@@ -9,7 +9,6 @@ hereseasApp.factory('userService', function ($http, $state, $cookies) {
     var loginState = false;   
     
     var userInfo = {};
-    //var itemDraft = [];
     
     var signupOrLogin = 'login';
     
