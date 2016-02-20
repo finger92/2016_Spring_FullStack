@@ -126,7 +126,7 @@ exports.voteAnsw = function(req, res, next) {
     
     var userId = req.user.id;
     if (userId) {
-        Answ.findById(req.param('id'),
+        Answ.findById(req.param('answ_id'),
             function(err, answ) {
                 if (err) {
                     res.json(Results.ERR_DB_ERR);

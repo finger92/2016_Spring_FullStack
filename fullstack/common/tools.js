@@ -34,3 +34,18 @@ exports.hasNull = function(data) {
     }
     return false;
 };
+
+exports.isNum = function(val){
+    if (val!=null && val!=""){
+        return !isNaN(val);
+    }
+    return false;
+}
+
+exports.isLegalVote = function(val){
+    if (exports.isNum(val)){
+        if(val >= 0 && val <= 5)
+        return true;
+    }
+    return false;
+}

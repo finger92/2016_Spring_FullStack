@@ -144,7 +144,11 @@ exports.getSelf = function(req, res, next) {
 exports.addExp = function(req, res, next) {
     var epUser = new EventProxy();
 
-    User.findById(req.user.id,
+    if (!tools.isNum(req.param('exp'))) {
+        return res.json(Results.ERR_PARAM_ERR);
+    }
+    
+    User.findById(req.param("u_id"),
         function(err, user) {
             if (err) {
                 res.json(Results.ERR_DB_ERR);

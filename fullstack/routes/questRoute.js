@@ -64,7 +64,7 @@ exports.postQuest = function(req, res, next) {
  */
 exports.getQuestList = function(req, res, next) {
 
-    Quest.find({}, 'id title content u_name u_level answ_num view_num last_act_time create_time')
+    Quest.find({}, 'id title u_name u_level answ_num view_num last_act_time create_time')
         .sort({
             create_time: 'desc'
         }).exec(function(err, quests) {
@@ -85,11 +85,11 @@ exports.getQuestList = function(req, res, next) {
 };
 
 /**
- * get questions list
+ * get question by question id
  */
 exports.getQuestById = function(req, res, next) {
     
-    Quest.findById(req.param('id'),
+    Quest.findById(req.param('quest_id'),
         function(err, quest) {
             if (err) {
                 res.json(Results.ERR_DB_ERR);
@@ -107,8 +107,7 @@ exports.getQuestById = function(req, res, next) {
                         u_name: quest.u_name,
                         u_level: quest.u_level,
                         answ_num: quest.answ_num,
-                        view_time: quest.view_time,
-                        last_act: quest.last_act,
+                        view_num: quest.view_num,
                         last_act_time: quest.last_act_time,
                         create_time: quest.create_time
                     }
@@ -120,33 +119,27 @@ exports.getQuestById = function(req, res, next) {
 };
 
 /**
- * get questions list
+ * get questions list by user id
  */
 exports.getQuestByUserId = function(req, res, next) {
-    var userId = req.user.id;
-    if (userId) {
-        Quest.find({u_id: userId}, 'id title content u_name u_level answ_num view_num last_act_time create_time')
-        .sort({
-            last_act_time: 'desc'
-        }).exec(function(err, quests) {
-            if (err) {
-                res.json(Results.ERR_DB_ERR);
-                return;
-            } else if (!quests.length) {
-                res.json(Results.ERR_NOTFOUND_ERR);
-                return;
-            } else {    
-                res.json({
-                    result: true,
-                    data: quests
-                });
-                return;
-            }
-        });
-    } else {
-        res.json(Results.ERR_REQUIRELOGIN_ERR);
-        return;
-    }
+    Quest.find({u_id: req.param('u_id')}, 'id title content u_name u_level answ_num view_num last_act_time create_time')
+    .sort({
+        last_act_time: 'desc'
+    }).exec(function(err, quests) {
+        if (err) {
+            res.json(Results.ERR_DB_ERR);
+            return;
+        } else if (!quests.length) {
+            res.json(Results.ERR_NOTFOUND_ERR);
+            return;
+        } else {    
+            res.json({
+                result: true,
+                data: quests
+            });
+            return;
+        }
+    });
 };
 
 /**
@@ -182,7 +175,7 @@ exports.getHotQuestList = function(req, res, next) {
 exports.addViewerNum = function(req, res, next) {
     var epQuest = new EventProxy();
 
-    Quest.findById(req.param('id'),
+    Quest.findById(req.param('quest_id'),
         function(err, quest) {
             if (err) {
                 res.json(Results.ERR_DB_ERR);
