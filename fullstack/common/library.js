@@ -27,29 +27,30 @@ exports.addVote = function(pre_vote, vote_num, vote){
 exports.rankAnswList = function(answlist){
     var temp = new Array();
     var result = new Array();
+    var weight = new Array();
     
     if(answlist.length == 0) return new Array();
     if(answlist.length == 1) return answlist;
     
     var init = answlist[0];
-    var i =0;
+    var i = 0;
+    
     for(var answ in answlist){
-        var weight = answlist[answ].vote*7+answlist[answ].u_level*3;
-        while(!tools.isEmpty(temp[weight])) weight += 1;
-        temp[weight] = answlist[answ];
+        weight[answ] = answlist[answ].vote*7+answlist[answ].u_level*3;
     }
     
-    for(var answ in temp){
-//        if(!isNaN(temp[answ])){
-            result.push(temp[answ]);
-//        }
+    while(answlist.length != result.length){
+        var n = 0;
+        var gt = weight[n];
+        for(var j in weight){
+            if(weight[j] > gt){
+                gt = weight[j];
+                n = j;
+            }
+        }
+        result.push(answlist[n]);
+        weight[n] = -1;
     }
     
-    result = result.reverse();
-    
-//    for(var answ in answlist){
-//        temp[answ.vote*7+answ.u_level*3]
-//    }
-//    result.append();
     return result;
 }

@@ -112,7 +112,7 @@ exports.getAnswList = function(req, res, next) {
             } else {    
                 res.json({
                     result: true,
-                    data: answs
+                    data: Library.rankAnswList(answs)
                 });
                 return;
             }

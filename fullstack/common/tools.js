@@ -49,3 +49,8 @@ exports.isLegalVote = function(val){
     }
     return false;
 }
+
+exports.isArray = function(obj){
+    return Object.prototype.toString.call(obj) === '[object Array]';
+}
+

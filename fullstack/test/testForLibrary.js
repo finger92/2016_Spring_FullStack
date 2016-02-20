@@ -56,6 +56,7 @@ exports.testRankAnswList = function(test){
     var l = [b, d, c, a];
     l = Library.rankAnswList(l);
     
+//    test.equal(l,a);
     test.ok(testUListCont(l[0], a));
     test.ok(testUListCont(l[1], b));
     test.ok(testUListCont(l[2], d));
