@@ -12,10 +12,7 @@ var passport = require('passport');
 var flash = require('connect-flash');
 var LocalStrategy = require('passport-local').Strategy;
 var md5 = require('MD5');
-
 var config = require('./config');
-var _ = require('lodash');
-
 var app = express();
 var routes = require('./routes');
 //var authUser = require('./common/auth.js');
@@ -36,7 +33,7 @@ app.use(logger('dev'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
-app.use(express.static(path.join(__dirname, 'public')));
+app.use(express.static(path.join(_id_dirname, 'public')));
 app.use(session({
     secret: config.session_secret,
     store: new MongoStore({
@@ -49,10 +46,6 @@ app.use(session({
     resave: true,
     saveUninitialized: true,
 }));
-
-// set config file
-var config = require('./config');
-var _ = require('lodash');
 
 app.use(function(req, res, next) {
     res.header("Access-Control-Allow-Origin", "*");
