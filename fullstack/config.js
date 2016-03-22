@@ -5,7 +5,7 @@ var config = {
 	website_name: 'FullStack',
 	description: 'Q&A!',
 	site_static_host: '',
-	port: 80,
+	port: 3000,
 
 	auth_cookie_name: 'fs_cookie',
 
