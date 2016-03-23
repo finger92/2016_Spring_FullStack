@@ -53,6 +53,7 @@ app.use(session({
 }));
 
 var corsOptions = {
+    origin:true,
     credentials:true
 };
 
