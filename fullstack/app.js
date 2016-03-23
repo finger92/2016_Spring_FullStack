@@ -52,19 +52,19 @@ app.use(session({
     saveUninitialized: true,
 }));
 
-var corsOptions = {
-    origin:true,
-    credentials:true
-};
-
-app.use(cors(corsOptions));
-//app.use(function(req, res, next) {
-//    res.header("Access-Control-Allow-Origin", req.headers.origin);
-//    res.header("Access-Control-Allow-Credentials", true);
-//    res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept, authorization,X-Prototype-Version,Allow,*, Content-Length");
-//    res.header("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS, HEAD");
-//    next();
-//});
+//var corsOptions = {
+//    origin:true,
+//    credentials:true
+//};
+//
+//app.use(cors(corsOptions));
+app.use(function(req, res, next) {
+    res.header("Access-Control-Allow-Origin", req.headers.origin);
+    res.header("Access-Control-Allow-Credentials", true);
+    res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept, authorization,X-Prototype-Version,Allow,*, Content-Length");
+    res.header("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS, HEAD");
+    next();
+});
 
 // Initialize Passport!  Also use passport.session() middleware, to support
 // persistent login sessions (recommended).
