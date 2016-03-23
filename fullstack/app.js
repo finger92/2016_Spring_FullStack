@@ -53,7 +53,7 @@ app.use(session({
 }));
 
 var corsOptions = {
-    origin: 'http://example.com',
+    credentials:true,
     preflightContinue:true
 };
 
