@@ -52,20 +52,20 @@ app.use(session({
     saveUninitialized: true,
 }));
 
-var corsOptions = {
-    origin:true,
-    credentials:true,
-    preflightContinue:true
-};
+//var corsOptions = {
+//    origin:true,
+//    credentials:true
+//};
+//
+//app.use(cors(corsOptions));
+app.use(function(req, res, next) {
+    res.header("Access-Control-Allow-Origin", req.headers.origin);
+    res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept, authorization,X-Prototype-Version,Allow,*, Content-Length");
+    res.header("Access-Control-Allow-Credentials", true);
+    res.header("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS, HEAD");
+    next();
+});
 
-app.use(cors(corsOptions));
-//app.use(function(req, res, next) {
-//    res.header("Access-Control-Allow-Origin", req.headers.origin);
-//    res.header("Access-Control-Allow-Credentials", true);
-//    res.header("Access-Control-Allow-Headers", "accept, content-type");
-//    res.header("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, HEAD");
-//    next();
-//});
 
 // Initialize Passport!  Also use passport.session() middleware, to support
 // persistent login sessions (recommended).
@@ -139,40 +139,42 @@ passport.use(new LocalStrategy({
 // set route
 routes(app);
 
-// catch 404 and forward to error handler
-app.use(function(req, res, next) {
-  var err = new Error('Not Found');
-  err.status = 404;
-  next(err);
-});
-
-// set static, dynamic helpers
-_.extend(app.locals, {
-    config: config
-});
-
 // error handlers
 
 // development error handler
 // will print stacktrace
 if (app.get('env') === 'development') {
-  app.use(function(err, req, res, next) {
-    res.status(err.status || 500);
-    res.render('error', {
-      message: err.message,
-      error: err
+    app.use(function(err, req, res, next) {
+        res.status(err.status || 500);
+        res.render('error', {
+            message: err.message,
+            error: err
+        });
     });
-  });
+
 }
 
 // production error handler
 // no stacktraces leaked to user
 app.use(function(err, req, res, next) {
-  res.status(err.status || 500);
-  res.render('error', {
-    message: err.message,
-    error: {}
-  });
+    res.json({
+        result: false,
+        err: 'ERR_SERVICE_ERROR',
+        message: err
+    });
+});
+
+// catch 404 and forward to error handler
+app.use(function(req, res, next) {
+    res.json({
+        result: false,
+        err: 'ERR_SERVICE_NOT_FOUND'
+    });
+});
+
+// set static, dynamic helpers
+_.extend(app.locals, {
+    config: config
 });
 
 
