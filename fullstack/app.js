@@ -53,8 +53,7 @@ app.use(session({
 }));
 
 var corsOptions = {
-    credentials:true,
-    preflightContinue:true
+    credentials:true
 };
 
 app.use(cors(corsOptions));
