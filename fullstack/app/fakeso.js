@@ -1,5 +1,5 @@
 var fakesoApp = angular.module('fakesoApp', [
-    'ui.router','ngResource'
+    'ui.router','ngResource','ngCookies'
 ]);
 
 fakesoApp.config(function ($stateProvider, $urlRouterProvider, $httpProvider) {

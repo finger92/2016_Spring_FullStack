@@ -35,4 +35,8 @@ module.exports = function(app) {
     
     // admin
     app.post('/admin', adminRoute.createAdmin);
+    
+    app.get('/', function(req, res) {
+        res.render('index');
+    });
 }
