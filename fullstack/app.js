@@ -7,12 +7,15 @@ var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 var session = require('express-session');
 var MongoStore = require('connect-mongo')(session);
-var _ = require('lodash');
 var passport = require('passport');
 var flash = require('connect-flash');
 var LocalStrategy = require('passport-local').Strategy;
 var md5 = require('MD5');
+var cors = require('cors');
+
 var config = require('./config');
+var _ = require('lodash');
+
 var app = express();
 var routes = require('./routes');
 //var authUser = require('./common/auth.js');
@@ -26,6 +29,7 @@ app.use(compress());
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'ejs');
+app.engine('html', require('ejs-mate'));
 
 // uncomment after placing your favicon in /public
 //app.use(favicon(path.join(__dirname, 'public', 'favicon.ico')));
@@ -41,7 +45,8 @@ app.use(session({
     }),
     // cookie: { maxAge: 60000,secure: true },
     cookie: {
-        maxAge: 1000 * 60 * 15
+        maxAge: 1000 * 60 * 15,
+        domain: ''
     },
     resave: true,
     saveUninitialized: true,
