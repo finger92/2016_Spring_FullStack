@@ -21,16 +21,6 @@ exports.postAnsw = function(req, res, next) {
     var ep = new EventProxy();
     var userId = req.user.id;
     var quest_id = req.param('quest_id');
-    console.log(req.param('content'),quest_id);
-    if (userId) {
-        if(tools.isEmpty(req.param('content')) || tools.isEmpty(quest_id)){
-            res.json(Results.ERR_PARAM_ERR);
-            return;
-        }
-        ep.emit("postAnswer");
-    } else {
-        ep.emit("error", 'ERR_REQUIRELOGIN_ERR');
-    }
     
     ep.all("postAnswer", function() {
         console.log('test');
@@ -52,15 +42,14 @@ exports.postAnsw = function(req, res, next) {
                             console.log(err);
                             return next();
                         } else {
-                            ep.emit("change_last_action");
+                            ep.emit("changeLastAction");
                         }
                     });
                 };
             });
     });
     
-    
-    ep.all('change_last_action', function() {
+    ep.all('changeLastAction', function() {
         console.log('change last action');
         Quest.findById(quest_id,
             function(err, quest) {
@@ -93,6 +82,16 @@ exports.postAnsw = function(req, res, next) {
             err: err
         });
     });
+    
+    if (userId) {
+        if(tools.isEmpty(req.param('content')) || tools.isEmpty(quest_id)){
+            res.json(Results.ERR_PARAM_ERR);
+            return;
+        }
+        ep.emit("postAnswer");
+    } else {
+        ep.emit("error", 'ERR_REQUIRELOGIN_ERR');
+    }
 };
 
 /**
