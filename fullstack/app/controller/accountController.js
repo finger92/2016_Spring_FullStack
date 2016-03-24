@@ -1,4 +1,4 @@
-fakesoApp.controller('AccountController', function($scope,$state,$window, requestService, userService){
+fakesoApp.controller('AccountController', function($scope,$state,$window,$cookies, requestService, userService){
     
     $scope.userData = {};	
     
@@ -26,11 +26,13 @@ fakesoApp.controller('AccountController', function($scope,$state,$window, reques
         else $scope.psworderr = true;
         if($scope.user.username != undefined) $scope.usererr = false;
         else $scope.user.username = true;
-                        console.log($scope.emailerr,$scope.psworderr,$scope.usererr);
+                        //console.log($scope.emailerr,$scope.psworderr,$scope.usererr);
         if(!$scope.emailerr && !$scope.psworderr && !$scope.usererr){
             requestService.DoRegister($scope.user,function(res){
-                console.log(res);
+                //console.log(res,1);
+                //console.log(res.result);
                 if(res.result){
+                    $state.go('home');
                 }else{
                 }
             });
@@ -38,21 +40,32 @@ fakesoApp.controller('AccountController', function($scope,$state,$window, reques
     };
     
     $scope.doLogin = function(){
-        console.log($scope.user);
+        //console.log($scope.user);
         var isMatch = $scope.emailpattern.test($scope.user.email);
         if(isMatch)    $scope.emailerr = false;
         else $scope.emailerr = true;
         if($scope.user.password != undefined) $scope.psworderr = false;
         else $scope.psworderr = true;
+        //console.log($scope.emailerr,$scope.psworderr,1);
         if(!$scope.emailerr && !$scope.psworderr){
             requestService.DoLogin($scope.user,function(res){
                 console.log(res);
                 if(res.result){
+                    $cookies.login = true;
+                    console.log(res.id);
+                    $cookies.userId = res.id;
+                    $state.go('home');
                 }else{
                 }
             });
         }
     };
     
-    
+    $scope.doLogout = function(){
+        requestService.DoLogout(function(res){
+            $cookies.login = false;
+            delete $cookies.userId;
+            $state.reload();
+        });
+    }
 });

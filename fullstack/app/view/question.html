@@ -1,0 +1,16 @@
+Question:
+<div>title:{{quest.title}}</div>
+<div>content:{{quest.content}}</div>
+<div>u_name:{{quest.u_name}}</div>
+<hr>
+Answers:
+<div ng-repeat="asw in asws">
+    <div>{{asw.title}}</div>
+</div>
+<hr>
+Post answer:
+<div>
+    content<input type="text" ng-model="newasw.content">
+    <br>
+    <button type="submit" ng-click='doPostAsw()'>SUBMIT</button>
+</div>

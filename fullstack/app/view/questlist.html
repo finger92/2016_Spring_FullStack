@@ -1,1 +1,6 @@
 <a href="#/postqst"><button>POST</button></a>
+<div ng-repeat="qst in qsts">
+    <hr>
+    <div ng-click='goQst(qst._id)'><a>title:{{qst.title}}</a></div>
+    <div>u_name:{{qst.u_name}}</div>
+</div>

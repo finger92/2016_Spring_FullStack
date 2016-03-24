@@ -2,7 +2,7 @@ fakesoApp.factory('userService', function ($http, $state) {
 
 
     var userService = this;
-    var host = "http://127.0.0.1";    
+    var host = "http://52.36.23.134:3000";    
     var toSignup = false;
     var toLogin = false;
 

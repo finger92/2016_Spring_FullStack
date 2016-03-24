@@ -22,7 +22,7 @@ fakesoApp.config(function ($stateProvider, $urlRouterProvider, $httpProvider) {
     $stateProvider.state('questlist', {
         url: '/quests',
         templateUrl: '/app/view/questlist.html',
-        controller: 'QuestController'
+        controller: 'QuestListController'
     });
     
     $stateProvider.state('quest', {
@@ -46,6 +46,6 @@ fakesoApp.config(function ($stateProvider, $urlRouterProvider, $httpProvider) {
     $stateProvider.state('postqst', {
         url: '/postqst',
         templateUrl: '/app/view/post-quest.html',
-        controller: 'QuestController'
+        controller: 'QuestPostController'
     });
 });

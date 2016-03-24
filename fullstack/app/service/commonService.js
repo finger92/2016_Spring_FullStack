@@ -27,7 +27,7 @@ fakesoApp.factory('requestService', ['$resource','userService', function($resour
     var host = userService.getHost()+'/';
     
     return $resource(host+':dir/:action/:id/:search', {dir: "@dir", id: "@id", action:"@action"}, {
-        DoRegister: { method: "POST", params: { dir: "doRegister" } }, 
+        DoRegister: {method:'POST', params: { dir: "doRegister" } }, 
         DoLogin: { method: "POST", params: { dir: "doLogin"} },
         DoLogout: { method: "GET", params: { dir: "doLogout"} },
         GetUser: { method: "GET", params: { dir: "getSelf"} },
