@@ -58,7 +58,7 @@ exports.postAnsw = function(req, res, next) {
                 } else if (quest == null) {
                     ep.emit("error", 'ERR_NOTFOUND_ERR');
                 } else {
-                    quest.last_act_time = Date.now;
+                    quest.last_act_time = new Date();
                     quest.answ_num = Library.addNum(quest.answ_num, 1);
 
                     quest.save(function(err, quest) {
