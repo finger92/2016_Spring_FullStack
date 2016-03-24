@@ -148,21 +148,7 @@ exports.addExp = function(req, res, next) {
         return res.json(Results.ERR_PARAM_ERR);
     }
     
-    User.findById(req.param("u_id"),
-        function(err, user) {
-            if (err) {
-                res.json(Results.ERR_DB_ERR);
-                return;
-            } else if (user == null) {
-                res.json(Results.ERR_NOTFOUND_ERR);
-                return;
-            } else {
-                epUser.emit("findUser", user);
-            }
-        });
-
     epUser.all("findUser", function(user) {
-
         user = Library.addUserExp(user, req.param('exp'));
         user.save(function(err, user) {
 
@@ -180,7 +166,19 @@ exports.addExp = function(req, res, next) {
             }
         });
     });
-
+    
+    User.findById(req.param("u_id"),
+        function(err, user) {
+            if (err) {
+                res.json(Results.ERR_DB_ERR);
+                return;
+            } else if (user == null) {
+                res.json(Results.ERR_NOTFOUND_ERR);
+                return;
+            } else {
+                epUser.emit("findUser", user);
+            }
+        });
 };
 
 /**
@@ -193,19 +191,6 @@ exports.changePwd = function(req, res, next) {
         res.json(Results.ERR_PARAM_ERR);
         return;  
     }
-    
-    User.findById(req.user.id,
-        function(err, user) {
-            if (err) {
-                res.json(Results.ERR_DB_ERR);
-                return;
-            } else if (user == null) {
-                res.json(Results.ERR_NOTFOUND_ERR);
-                return;
-            } else {
-                epUser.emit("findUser", user);
-            }
-        });
 
     epUser.all("findUser", function(user) {
         user.password = md5(req.param('password'));
@@ -223,5 +208,17 @@ exports.changePwd = function(req, res, next) {
             }
         });
     });
-
+    
+    User.findById(req.user.id,
+        function(err, user) {
+            if (err) {
+                res.json(Results.ERR_DB_ERR);
+                return;
+            } else if (user == null) {
+                res.json(Results.ERR_NOTFOUND_ERR);
+                return;
+            } else {
+                epUser.emit("findUser", user);
+            }
+        });
 };

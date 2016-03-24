@@ -23,17 +23,7 @@ exports.postComnt = function(req, res, next) {
     var userId = req.user.id;
     var answ_id = req.param('answ_id');
     
-    if (userId) {
-        if(tools.isEmpty(req.param('content'))){
-            res.json(Results.ERR_PARAM_ERR);
-            return;
-        }
-        ep.emit('post_comnt');
-    } else {
-        ep.emit("error", 'ERR_REQUIRELOGIN_ERR');
-    }
-    
-    ep.all('post_comnt', function() {
+    ep.all('postComnt', function() {
         User.findById(userId,
             function(err, comnt) {
                 if (err) {
@@ -68,6 +58,16 @@ exports.postComnt = function(req, res, next) {
             err: err
         });
     });
+    
+    if (userId) {
+        if(tools.isEmpty(req.param('content')) || tools.isEmpty(answ_id)){
+            res.json(Results.ERR_PARAM_ERR);
+            return;
+        }
+        ep.emit('postComnt');
+    } else {
+        ep.emit("error", 'ERR_REQUIRELOGIN_ERR');
+    }
 };
 
 /**
