@@ -33,6 +33,7 @@ exports.postAnsw = function(req, res, next) {
     }
     
     ep.all('post_answer', function() {
+        console.log('post answer');
         User.findById(userId,
             function(err, user) {
                 if (err) {
@@ -60,6 +61,7 @@ exports.postAnsw = function(req, res, next) {
     
     
     ep.all('change_last_action', function() {
+        console.log('change last action');
         Quest.findById(quest_id,
             function(err, quest) {
                 if (err) {
