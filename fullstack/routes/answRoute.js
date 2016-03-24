@@ -61,7 +61,7 @@ exports.postAnsw = function(req, res, next) {
                     quest.last_act_time = Date.now;
                     quest.answ_num = Library.addNum(quest.answ_num, 1);
 
-                    answ.save(function(err, answ) {
+                    quest.save(function(err, quest) {
                         if (err) {
                             console.log(err);
                             return next();
