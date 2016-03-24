@@ -27,13 +27,13 @@ exports.postAnsw = function(req, res, next) {
             res.json(Results.ERR_PARAM_ERR);
             return;
         }
-        ep.emit('post_answer');
+        ep.emit('post_answer','test');
     } else {
         ep.emit("error", 'ERR_REQUIRELOGIN_ERR');
     }
     
-    ep.all('post_answer', function() {
-        console.log('post answer');
+    ep.all('post_answer', function(test) {
+        console.log(test);
         User.findById(userId,
             function(err, user) {
                 if (err) {
