@@ -21,9 +21,9 @@ exports.postAnsw = function(req, res, next) {
     var ep = new EventProxy();
     var userId = req.user.id;
     var quest_id = req.param('quest_id');
-    
+    console.log(req.param('content'),quest_id);
     if (userId) {
-        if(tools.isEmpty(req.param('content'))){
+        if(tools.isEmpty(req.param('content')) || tools.isEmpty(quest_id)){
             res.json(Results.ERR_PARAM_ERR);
             return;
         }
