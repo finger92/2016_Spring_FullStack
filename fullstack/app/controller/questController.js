@@ -30,6 +30,7 @@ fakesoApp.controller('QuestListController', function($scope,$state,$window, requ
 });
 
 fakesoApp.controller('QuestController',function($scope,$state,$window,$stateParams, requestService, userService){
+    $scope.readyReply = false;
     $scope.quest = {
         title: '',
         content: '',
@@ -76,6 +77,14 @@ fakesoApp.controller('QuestController',function($scope,$state,$window,$statePara
                 $state.reload();
             }
         });
+    };
+    
+    $scope.showReplyPanel = function(){
+        $scope.readyReply = true;
+    };
+    
+    $scope.hideReplyPanel = function(){
+        $scope.readyReply = false;
     };
 });
 fakesoApp.controller('QuestPostController',function($scope,$state,$window, requestService, userService){

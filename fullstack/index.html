@@ -1,11 +1,13 @@
-<!doctype html>
+<!DOCTYPE html>
 <html ng-app="fakesoApp">
 
 <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Heap Overflow</title>
     <!-- js -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
     <script type="text/javascript" src="/app/view/js/angular/angular.js"></script>
     <script type="text/javascript" src="/app/view/js/angular/angular-route.js"></script>
     <script type="text/javascript" src="/app/view/js/angular/angular-ui-router.js"></script>
@@ -20,8 +22,10 @@
     <script type="text/javascript" src="/app/controller/aswController.js"></script>
     <script type="text/javascript" src="/app/controller/commentController.js"></script>
     <script type="text/javascript" src="/app/controller/questController.js"></script>
+    <script src="/app/view/js/bootstrap.min.js"></script>
     <!--CSS-->
     <link rel="stylesheet" type="text/css" href="/app/view/css/main.css">
+    <link href="/app/view/css/bootstrap.min.css" rel="stylesheet">
 </head> 
 <body>
     <div ui-view></div>

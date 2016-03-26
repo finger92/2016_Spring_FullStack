@@ -1,6 +1,124 @@
+<!--
 <a href="#/postqst"><button>POST</button></a>
 <div ng-repeat="qst in qsts">
     <hr>
     <div ng-click='goQst(qst._id)'><a>title:{{qst.title}}</a></div>
     <div>u_name:{{qst.u_name}}</div>
+</div>
+-->
+
+<header ng-include="'/app/view/header.html'"></header>
+<div class="container qstPage-padding">
+
+  <div class="row">
+
+    <div class="col-sm-8 blog-main">
+
+      <div class="blog-post">
+        <h2 class="blog-post-title"><a href="#/quest/test">Qustion 1</a></h2>
+        <p class="blog-post-meta">
+            <span>January 1, 2014 by <a href="#">Mark</a></span>
+            <span class="pull-right">level  17</span>
+        </p>
+          <hr>
+        <p>This blog post shows a few different types of content that's supported and styled with Bootstrap. Basic typography, images, and code are all supported.</p>
+          
+      </div><!-- /.blog-post -->
+        
+      <div class="blog-post">
+        <h2 class="blog-post-title">Qustion 2</h2>
+        <p class="blog-post-meta">
+            <span>January 1, 2014 by <a href="#">Mark</a></span>
+            <span class="pull-right">level  17</span>
+        </p>
+          <hr>
+        <p>This blog post shows a few different types of content that's supported and styled with Bootstrap. Basic typography, images, and code are all supported.</p>
+          
+      </div><!-- /.blog-post -->
+        
+      <div class="blog-post">
+        <h2 class="blog-post-title">Qustion 3</h2>
+        <p class="blog-post-meta">
+            <span>January 1, 2014 by <a href="#">Mark</a></span>
+            <span class="pull-right">level  17</span>
+        </p>
+          <hr>
+        <p>This blog post shows a few different types of content that's supported and styled with Bootstrap. Basic typography, images, and code are all supported.</p>
+          
+      </div><!-- /.blog-post -->
+
+<!--分页
+        <nav class="text-center">
+          <ul class="pagination">
+            <li>
+              <a href="#" aria-label="Previous">
+                <span aria-hidden="true">&laquo;</span>
+              </a>
+            </li>
+            <li><a href="#">1</a></li>
+            <li><a href="#">2</a></li>
+            <li><a href="#">3</a></li>
+            <li><a href="#">4</a></li>
+            <li><a href="#">5</a></li>
+            <li>
+              <a href="#" aria-label="Next">
+                <span aria-hidden="true">&raquo;</span>
+              </a>
+            </li>
+          </ul>
+        </nav>
+-->
+        <hr>
+        
+        <form class="form-horizontal">
+              <div class="form-group">
+                <label for="inputTitle" class="col-sm-2 control-label">Title</label>
+                <div class="col-sm-10">
+                  <input type="text" class="form-control" id="inputTitle" placeholder="Title" ng-model="quest.title">
+                </div>
+              </div>
+              <div class="form-group">
+                <label for="inputContent" class="col-sm-2 control-label">Content</label>
+                <div class="col-sm-10">
+                    <textarea class="form-control" rows="5" placeholder="Content" ng-model="quest.content"></textarea>
+                </div>
+              </div>
+              <div class="form-group">
+                <div class="col-sm-offset-2 col-sm-10">
+                  <button type="submit" class="btn btn-default pull-right">cancel</button>
+                  <button type="submit" class="btn btn-default pull-right postqst-button">post</button>    
+                </div>
+              </div>
+            </form>
+    </div><!-- /.blog-main -->
+
+    <div class="col-sm-3 col-sm-offset-1 blog-sidebar">
+      <div class="sidebar-module sidebar-module-inset">
+        <h4>About</h4>
+        <p>Etiam porta <em>sem malesuada magna</em> mollis euismod. Cras mattis consectetur purus sit amet fermentum. Aenean lacinia bibendum nulla sed consectetur.</p>
+      </div>
+      <div class="sidebar-module">
+        <h4>Top questions</h4>
+        <ol class="list-unstyled">
+          <li><a href="#">q1</a></li>
+          <li><a href="#">q2</a></li>
+          <li><a href="#">q3</a></li>
+        </ol>
+      </div>
+      <div class="sidebar-module">
+        <h4>Top users</h4>
+        <ol class="list-unstyled">
+          <li><a href="#">t</a></li>
+          <li><a href="#">t</a></li>
+          <li><a href="#">t</a></li>
+        </ol>
+      </div>
+    </div><!-- /.blog-sidebar -->
+
+  </div><!-- /.row -->
+  <div class="mastfoot">
+    <div class="inner">
+        <footer ng-include="'/app/view/footer.html'"></footer>
+    </div>
+  </div> 
 </div>
