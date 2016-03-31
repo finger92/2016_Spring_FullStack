@@ -10,7 +10,6 @@ var Results = require('./commonResult');
 var User = require('../models').User;
 var adminRoute = require('./adminRoute');
 var fs = require('fs');
-var passport = require('passport');
 var md5 = require('MD5');
 var Library = require('../common/library.js');
 
