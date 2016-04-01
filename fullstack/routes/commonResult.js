@@ -45,6 +45,10 @@ var Results = {
     ERR_SCHOOLISNULL_ERR: {
         result: false,
         err: 'ERR_SCHOOLISNULL_ERR'
+    },
+    ERR_EXISTED_EMAIL: {
+        result: false,
+        err: 'ERR_EXISTED_EMAIL'
     }
 
 

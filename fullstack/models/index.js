@@ -1,4 +1,5 @@
 var mongoose = require('mongoose');
+mongoose.Promise = require('bluebird');
 var config = require('../config');
 
 mongoose.connect(config.db, function (err) {

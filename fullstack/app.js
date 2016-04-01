@@ -44,10 +44,10 @@ app.use(session({
         url: config.db
     }),
     // cookie: { maxAge: 60000,secure: true },
-//    cookie: {
-//        maxAge: 1000 * 60 * 15,
-//        domain: '*'
-//    },
+   cookie: {
+       maxAge: 1000 * 60 * 15,
+       // domain: '*'
+   },
     resave: true,
     saveUninitialized: true,
 }));
@@ -175,39 +175,6 @@ app.use(function(err, req, res, next) {
     error: {}
   });
 });
-
-//// error handlers
-//
-//// development error handler
-//// will print stacktrace
-//if (app.get('env') === 'development') {
-//    app.use(function(err, req, res, next) {
-//        res.status(err.status || 500);
-//        res.render('error', {
-//            message: err.message,
-//            error: err
-//        });
-//    });
-//
-//}
-//
-//// production error handler
-//// no stacktraces leaked to user
-//app.use(function(err, req, res, next) {
-//    res.json({
-//        result: false,
-//        err: 'ERR_SERVICE_ERROR',
-//        message: err
-//    });
-//});
-//
-//// catch 404 and forward to error handler
-//app.use(function(req, res, next) {
-//    res.json({
-//        result: false,
-//        err: 'ERR_SERVICE_NOT_FOUND'
-//    });
-//});
 
 // set static, dynamic helpers
 _.extend(app.locals, {

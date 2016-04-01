@@ -1,26 +1,17 @@
-var passport = require('passport');
+var User = require('../models').User;
 
-export.login = function(req, res, next){
-    passport.authenticate('local', function(err, user, info) {
-        if (err) {
-            return next(err);
-        }
-        if (!user) {
-            return res.jsonp({
-                result: false,
-                err: info
-            });
-        }
-        req.logIn(user, function(err) {
-            if (err) {
-                return next(err);
-            }
-
-            return res.json({
-                id: user.id,
-                result: true
-            });
-
-        });
-    })(req, res, next);
+exports.save = function(user){
+    return user.save();
 }
+
+exports.findByEmail = function(email){
+    return User.findOne({
+        email: email
+    }).exec();
+}
+
+exports.findById = function(id){
+    return User.findById(id).exec();
+}
+
+

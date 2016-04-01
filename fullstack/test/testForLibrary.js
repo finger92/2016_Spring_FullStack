@@ -1,3 +1,4 @@
+(function(){
 var Library = require('../common/library.js');
 
 exports.testAddUserExp = function(test){
@@ -9,7 +10,7 @@ exports.testAddUserExp = function(test){
     
     // test case 2
     user = {experience:3, level:0};
-    user = Library.addUserExp(user, 3)
+    user = Library.addUserExp(user, 3);
     test.equal(user.experience, 1);
     test.equal(user.level, 1);
     test.done();
@@ -71,3 +72,4 @@ function testUListCont(actual, expect){
     }
     return false;
 }
+}())

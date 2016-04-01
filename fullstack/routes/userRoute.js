@@ -1,15 +1,11 @@
-var flash = require('connect-flash'),
-    express = require('express'),
-    passport = require('passport'),
-    util = require('util'),
+var passport = require('passport'),
     LocalStrategy = require('passport-local').Strategy;
+var userDao = require('../dao/userDao.js');
 var validator = require('validator');
 var EventProxy = require('eventproxy');
 var tools = require('../common/tools');
 var Results = require('./commonResult');
 var User = require('../models').User;
-var adminRoute = require('./adminRoute');
-var fs = require('fs');
 var md5 = require('MD5');
 var Library = require('../common/library.js');
 
@@ -65,39 +61,37 @@ exports.createUser = function(req, res, next) {
 
     var ep = new EventProxy();
     ep.all('success', function() {
-
-        user.save(function(err, user) {
-
-            if (err) {
-                console.log(err);
-                return next();
-            } else {
+        userDao.save (user).then(
+            function(user) {
                 res.json({
                     result: true,
                     id: user.id
-                }); 
+                });
+            }
+        ).catch(
+            function(err) {
+                res.json(Results.ERR_DB_ERR);
+                console.log(err);
                 return;
             }
-            
-        });
+        );
     });
 
-    ep.fail(function(err) {
-        res.json({
-            result: false,
-            err: err
-        });
-    });
-
-    User.findOne({
-        email: user.email
-    }, function(err, user) {
-        if (user != null) {
-            ep.emit("error", 'ERR_EXISTED_EMAIL ');
-        } else {
-            ep.emit('success');
+    userDao.findByEmail(user.email).then(
+        function(user) {
+            if(user == null){
+                ep.emit('success');
+            }else{
+                res.json(Results.ERR_EXISTED_EMAIL);
+            }
         }
-    });
+    ).catch(
+        function(err) {
+            res.json(Results.ERR_DB_ERR);
+            console.log(err);
+            return;
+        }
+    );
 };
 
 /**
@@ -106,15 +100,12 @@ exports.createUser = function(req, res, next) {
 exports.getSelf = function(req, res, next) {
     var userId = req.user.id;
     if (userId) {
-        User.findById(userId,
-            function(err, user) {
-                if (err) {
-                    res.json(Results.ERR_DB_ERR);
-                    return;
-                } else if (user == null) {
+        userDao.findById(userId).then(
+            function(user){
+                if(user == null){
                     res.json(Results.ERR_NOTFOUND_ERR);
                     return;
-                } else {
+                }else{
                     res.json({
                         result: true,
                         data: {
@@ -129,7 +120,14 @@ exports.getSelf = function(req, res, next) {
                     });
                     return;
                 }
-            });
+            }
+        ).catch(
+            function(err){
+                res.json(Results.ERR_DB_ERR);
+                console.log(err);
+                return;
+            }
+        );
     } else {
         res.json(Results.ERR_REQUIRELOGIN_ERR);
         return;
@@ -149,13 +147,8 @@ exports.addExp = function(req, res, next) {
     
     epUser.all("findUser", function(user) {
         user = Library.addUserExp(user, req.param('exp'));
-        user.save(function(err, user) {
-
-            if (err) {
-                console.log(err);
-                return next();
-            } else {
-
+        userDao.save(user) .then(
+            function(result) {
                 res.json({
                     result: true,
                     exp: user.experience,
@@ -163,21 +156,31 @@ exports.addExp = function(req, res, next) {
                 });
                 return;
             }
-        });
+        ).catch(
+            function(err) {
+                res.json(Results.ERR_DB_ERR);
+                console.log(err);
+                return;
+            }
+        );
     });
     
-    User.findById(req.param("u_id"),
-        function(err, user) {
-            if (err) {
-                res.json(Results.ERR_DB_ERR);
-                return;
-            } else if (user == null) {
+    userDao.findById(req.param("u_id")).then(
+        function(user){
+            if (user == null) {
                 res.json(Results.ERR_NOTFOUND_ERR);
                 return;
             } else {
                 epUser.emit("findUser", user);
             }
-        });
+        }
+    ).catch(
+        function(err){
+            res.json(Results.ERR_DB_ERR);
+            console.log(err);
+            return;
+        }
+    );
 };
 
 /**
@@ -193,31 +196,36 @@ exports.changePwd = function(req, res, next) {
 
     epUser.all("findUser", function(user) {
         user.password = md5(req.param('password'));
-        user.save(function(err, user) {
-
-            if (err) {
-                console.log(err);
-                return next();
-            } else {
-
+        userDao.save(user) .then(
+            function(result) {
                 res.json({
                     result: true,
                 });
-
+                return;
             }
-        });
+        ).catch(
+            function(err) {
+                res.json(Results.ERR_DB_ERR);
+                console.log(err);
+                return;
+            }
+        );
     });
     
-    User.findById(req.user.id,
-        function(err, user) {
-            if (err) {
-                res.json(Results.ERR_DB_ERR);
-                return;
-            } else if (user == null) {
+    userDao.findById(req.param("u_id")).then(
+        function(user){
+            if (user == null) {
                 res.json(Results.ERR_NOTFOUND_ERR);
                 return;
             } else {
                 epUser.emit("findUser", user);
             }
-        });
+        }
+    ).catch(
+        function(err){
+            res.json(Results.ERR_DB_ERR);
+            console.log(err);
+            return;
+        }
+    );
 };
