@@ -19,7 +19,19 @@ exports.addNum = function(pre_num, adder){
 
 // calculate the average vote
 exports.addVote = function(pre_vote, vote_num, vote){
+    console.log(pre_vote,vote_num,vote);
+    console.log((pre_vote * vote_num + vote), (vote_num + 1));
     return (pre_vote * vote_num + vote)/(vote_num + 1);
+}
+
+// check if user had voted
+exports.checkVote = function(answList, answId){
+    for(var answ in answList){
+        if(answList[answ].answ_id.toHexString() == answId){
+            return false;
+        }
+    }
+    return true;
 }
 
 // generate the rank list according to the vote(70%) and 

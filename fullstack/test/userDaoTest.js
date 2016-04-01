@@ -6,8 +6,17 @@
     user.email = 'test@gmail.com';
     user.username = 'yzhou';
     user.password = '123';
-    var userId;
-    userDao.save (user).then(function(t){userId = t.id}).catch(function(err){});
+    
+    exports.testSave = function(test){
+        userDao.save (user).then(
+            function(result){
+                test.equal(result.email, user.email);
+                test.equal(result.username, user.username);
+                test.equal(result.password, user.password);
+                test.done();
+            }
+        ).catch(function(err){test.done();});
+    }
 
     exports.testFindByEmail = function(test){
         userDao.findByEmail(user.email) .then(

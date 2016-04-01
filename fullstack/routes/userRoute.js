@@ -140,13 +140,13 @@ exports.getSelf = function(req, res, next) {
  */
 exports.addExp = function(req, res, next) {
     var epUser = new EventProxy();
-
-    if (!tools.isNum(req.param('exp'))) {
+    var exp = req.param('exp');
+    if (!tools.isNum(exp) ){
         return res.json(Results.ERR_PARAM_ERR);
     }
     
     epUser.all("findUser", function(user) {
-        user = Library.addUserExp(user, req.param('exp'));
+        user = Library.addUserExp(user, parseInt(exp));
         userDao.save(user) .then(
             function(result) {
                 res.json({

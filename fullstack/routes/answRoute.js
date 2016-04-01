@@ -1,17 +1,11 @@
-var flash = require('connect-flash'),
-    express = require('express'),
-    passport = require('passport'),
-    util = require('util'),
-    LocalStrategy = require('passport-local').Strategy;
-var validator = require('validator');
 var EventProxy = require('eventproxy');
 var tools = require('../common/tools');
 var Results = require('./commonResult');
-var User = require('../models').User;
 var Answ = require('../models').Answ;
-var Quest = require('../models').Quest;
-var adminRoute = require('./adminRoute');
-var fs = require('fs');
+var Vote = require('../models').Vote;
+var answDao = require('../dao/answDao.js');
+var questDao = require('../dao/questDao.js');
+var voteDao = require('../dao/voteDao.js');
 var Library = require('../common/library.js');
 
 /**
@@ -19,78 +13,72 @@ var Library = require('../common/library.js');
  */
 exports.postAnsw = function(req, res, next) {
     var ep = new EventProxy();
-    var userId = req.user.id;
+    var user = req.user;
     var quest_id = req.param('quest_id');
     
-    ep.all("postAnswer", function() {
-        console.log('test');
-        User.findById(userId,
-            function(err, user) {
-                if (err) {
-                    ep.emit("error", 'ERR_DB_ERR');
-                } else if (user == null) {
-                    ep.emit("error", 'ERR_NOTFOUND_ERR');
-                } else {
-                    var answ = new Answ();
-                    answ.quest_id = quest_id;
-                    answ.content = req.param('content');
-                    answ.u_id = userId;
-                    answ.u_name = user.username;
-                    answ.u_level = user.level;
-                    answ.save(function(err, answ) {
-                        if (err) {
-                            console.log(err);
-                            return next();
-                        } else {
-                            ep.emit("changeLastAction");
-                        }
-                    });
-                };
-            });
-    });
-    
     ep.all('changeLastAction', function() {
-        console.log('change last action');
-        Quest.findById(quest_id,
-            function(err, quest) {
-                if (err) {
-                    ep.emit("error", 'ERR_DB_ERR');
-                } else if (quest == null) {
-                    ep.emit("error", 'ERR_NOTFOUND_ERR');
+        questDao.findById(req.param('quest_id')).then(
+             function(quest){
+                if (quest == null) {
+                    res.json(Results.ERR_NOTFOUND_ERR);
+                    return;
                 } else {
                     quest.last_act_time = new Date();
                     quest.answ_num = Library.addNum(quest.answ_num, 1);
-
-                    quest.save(function(err, quest) {
-                        if (err) {
-                            console.log(err);
-                            return next();
-                        } else {
+                    questDao.save(quest).then(
+                         function(quest){
                             res.json({
                                 result: true
                             });
                             return; 
+                         }
+                    ).catch(
+                        function(err){
+                            res.json(Results.ERR_DB_ERR);
+                            console.log(err);
+                            return;
                         }
-                    });
+                    );
                 };
-            });
+             }
+        ).catch(
+            function(err){
+                res.json(Results.ERR_DB_ERR);
+                console.log(err);
+                return;
+            }
+        );
+    });
+
+    ep.all("postAnswer", function() {
+        var answ = new Answ();
+        answ.quest_id = quest_id;
+        answ.content = req.param('content');
+        answ.u_id = user.id;
+        answ.u_name = user.username;
+        answ.u_level = user.level;
+        answDao.save(answ).then(
+             function(answ){
+                ep.emit("changeLastAction");
+             }
+        ).catch(
+            function(err){
+                res.json(Results.ERR_DB_ERR);
+                console.log(err);
+                return;
+            }
+        );
     });
     
-    ep.fail(function(err) {
-        res.json({
-            result: false,
-            err: err
-        });
-    });
-    
-    if (userId) {
+    if (user.id) {
         if(tools.isEmpty(req.param('content')) || tools.isEmpty(quest_id)){
             res.json(Results.ERR_PARAM_ERR);
             return;
         }
         ep.emit("postAnswer");
     } else {
-        ep.emit("error", 'ERR_REQUIRELOGIN_ERR');
+        res.json(Results.ERR_REQUIRELOGIN_ERR);
+        return;
     }
 };
 
@@ -98,16 +86,14 @@ exports.postAnsw = function(req, res, next) {
  * get answer list
  */
 exports.getAnswList = function(req, res, next) {
-
     var quest_id = req.param('quest_id');
-    Answ.find({quest_id:quest_id}, 'id content u_name u_level vote create_time')
-        .sort({
-            vote: 'desc'
-        }).exec(function(err, answs) {
-            if (err) {
-                res.json(Results.ERR_DB_ERR);
-                return;
-            } else if (!answs.length) {
+    if(tools.isEmpty(quest_id)){
+        res.json(Results.ERR_PARAM_ERR);
+        return;
+    }
+    answDao.findByQuestId(quest_id).then(
+         function(answs){
+            if (!answs.length) {
                 res.json(Results.ERR_NOTFOUND_ERR);
                 return;
             } else {    
@@ -117,45 +103,85 @@ exports.getAnswList = function(req, res, next) {
                 });
                 return;
             }
-        })
+        }
+    ).catch(
+        function(err){
+            res.json(Results.ERR_DB_ERR);
+            console.log(err);
+            return;
+        }
+    );
 };
 
 /**
  * add new vote
  */
 exports.voteAnsw = function(req, res, next) {
-    
-    var userId = req.user.id;
-    if (userId) {
-        Answ.findById(req.param('answ_id'),
-            function(err, answ) {
-                if (err) {
-                    res.json(Results.ERR_DB_ERR);
-                    return;
-                } else if (answ == null) {
+    var ep = new EventProxy();
+    var user = req.user;
+    var answ_id = req.param('answ_id');
+    var voteStar = req.param('vote');
+    ep.all('postVote',function(){
+        answDao.findById(answ_id).then(
+            function(answ) {
+                if (answ == null) {
                     res.json(Results.ERR_NOTFOUND_ERR);
                     return;
                 } else {
-                    answ.vote = Library.addVote(answ.vote, answ.vote_num, req.param('vote'));
+                    answ.vote = Library.addVote(answ.vote, answ.vote_num, parseInt(voteStar));
                     answ.vote_num = Library.addNum(answ.vote_num, 1);
-                    answ.save(function(err, quest) {
-                        if (err) {
-                            console.log(err);
-                            return next();
-                        } else {
-
+                    answDao.save(answ).then(
+                         function(answ){
+                            var vote = new Vote();
+                            vote.u_id = user.id;
+                            vote.answ_id = answ.id;
+                            voteDao.save(vote);
                             res.json({
-                                result: true
+                                result: true,
+                                vote: answ.vote
                             });
-
+                         }
+                    ).catch(
+                        function(err){
+                            res.json(Results.ERR_DB_ERR);
+                            console.log(err);
+                            return;
                         }
-                    });
-                    return;
+                    );
                 };
-            });
+            }
+        ).catch(
+            function(err) {
+                res.json(Results.ERR_DB_ERR);
+                console.log(err);
+                return;
+            }
+        );
+    });
+
+    if (user.id) {
+        if(tools.isEmpty(answ_id) || !tools.isNum(voteStar)){
+            res.json(Results.ERR_PARAM_ERR);
+            return;
+        }
+        voteDao.findByUserId(user.id).then(
+            function(votes){
+                if(Library.checkVote(votes, answ_id)){
+                    ep.emit("postVote");
+                }else{
+                    res.json(Results.ERR_ALREADY_VOTED);
+                    return;
+                }
+            }
+        ).catch(
+            function(err) {
+                res.json(Results.ERR_DB_ERR);
+                console.log(err);
+                return;
+            }
+        );
     } else {
         res.json(Results.ERR_REQUIRELOGIN_ERR);
         return;
     }
-
 };

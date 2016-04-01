@@ -1,58 +1,41 @@
-var flash = require('connect-flash'),
-    express = require('express'),
-    passport = require('passport'),
-    util = require('util'),
-    LocalStrategy = require('passport-local').Strategy;
-var validator = require('validator');
 var EventProxy = require('eventproxy');
 var tools = require('../common/tools');
 var Results = require('./commonResult');
-var User = require('../models').User;
 var Quest = require('../models').Quest;
-var adminRoute = require('./adminRoute');
-var fs = require('fs');
+var questDao = require('../dao/questDao.js');
 var Library = require('../common/library.js');
 
 /**
  * post question 
  */
 exports.postQuest = function(req, res, next) {
-    
-    var userId = req.user.id;
-    if (userId) {
+    var user = req.user;
+    if (user.id) {
         if(tools.isEmpty(req.param('title')) || tools.isEmpty(req.param('content'))){
             res.json(Results.ERR_PARAM_ERR);
             return;
         }
         
-        User.findById(userId,
-            function(err, user) {
-                if (err) {
-                    res.json(Results.ERR_DB_ERR);
-                    return;
-                } else if (user == null) {
-                    res.json(Results.ERR_NOTFOUND_ERR);
-                    return;
-                } else {
-                    var quest = new Quest();
-                    quest.title = req.param('title');
-                    quest.content = req.param('content');
-                    quest.u_id = userId;
-                    quest.u_name = user.username;
-                    quest.u_level = user.level;
-                    quest.save(function(err, quest) {
-                        if (err) {
-                            console.log(err);
-                            return next();
-                        } else {
-                            res.json({
-                                result: true,
-                                id: quest.id
-                            });
-                        }
-                    });
-                };
-            });
+        var quest = new Quest();
+        quest.title = req.param('title');
+        quest.content = req.param('content');
+        quest.u_id = user.id;
+        quest.u_name = user.username;
+        quest.u_level = user.level;
+        questDao.save(quest).then(
+             function(quest){
+                res.json({
+                    result: true,
+                    id: quest.id
+                });
+             }
+        ).catch(
+            function(err){
+                res.json(Results.ERR_DB_ERR);
+                console.log(err);
+                return;
+            }
+        );
     } else {
         res.json(Results.ERR_REQUIRELOGIN_ERR);
         return;
@@ -63,15 +46,9 @@ exports.postQuest = function(req, res, next) {
  * get questions list
  */
 exports.getQuestList = function(req, res, next) {
-
-    Quest.find({}, 'id title u_name u_level answ_num view_num last_act_time create_time')
-        .sort({
-            create_time: 'desc'
-        }).exec(function(err, quests) {
-            if (err) {
-                res.json(Results.ERR_DB_ERR);
-                return;
-            } else if (!quests.length) {
+    questDao.findAll().then(
+         function(quests){
+            if (!quests.length) {
                 res.json(Results.ERR_NOTFOUND_ERR);
                 return;
             } else {    
@@ -81,20 +58,23 @@ exports.getQuestList = function(req, res, next) {
                 });
                 return;
             }
-        })
+         }
+    ).catch(
+        function(err){
+            res.json(Results.ERR_DB_ERR);
+            console.log(err);
+            return;
+        }
+    );
 };
 
 /**
  * get question by question id
  */
 exports.getQuestById = function(req, res, next) {
-    
-    Quest.findById(req.param('quest_id'),
-        function(err, quest) {
-            if (err) {
-                res.json(Results.ERR_DB_ERR);
-                return;
-            } else if (quest == null) {
+    questDao.findById(req.param('quest_id')).then(
+         function(quest){
+            if (quest == null) {
                 res.json(Results.ERR_NOTFOUND_ERR);
                 return;
             } else {
@@ -114,48 +94,23 @@ exports.getQuestById = function(req, res, next) {
                 });
                 return;
             };
-        });
-
+         }
+    ).catch(
+        function(err){
+            res.json(Results.ERR_DB_ERR);
+            console.log(err);
+            return;
+        }
+    );
 };
 
 /**
  * get questions list by user id
  */
 exports.getQuestByUserId = function(req, res, next) {
-    Quest.find({u_id: req.param('u_id')}, 'id title content u_name u_level answ_num view_num last_act_time create_time')
-    .sort({
-        last_act_time: 'desc'
-    }).exec(function(err, quests) {
-        if (err) {
-            res.json(Results.ERR_DB_ERR);
-            return;
-        } else if (!quests.length) {
-            res.json(Results.ERR_NOTFOUND_ERR);
-            return;
-        } else {    
-            res.json({
-                result: true,
-                data: quests
-            });
-            return;
-        }
-    });
-};
-
-/**
- * get hot questions list
- */
-exports.getHotQuestList = function(req, res, next) {
-    
-    var query = Quest.find({},'id title content u_name u_level answ_num view_num last_act_time create_time')
-        .sort({
-            last_act_time: 'desc'
-        }).limit(10)
-        .exec(function(err, quests) {
-            if (err) {
-                res.json(Results.ERR_DB_ERR);
-                return;
-            } else if (!quests.length) {
+    questDao.findByUserId(req.param('u_id')).then(
+         function(quests){
+            if (!quests.length) {
                 res.json(Results.ERR_NOTFOUND_ERR);
                 return;
             } else {    
@@ -165,8 +120,40 @@ exports.getHotQuestList = function(req, res, next) {
                 });
                 return;
             }
-        });
-    
+        }
+    ).catch(
+        function(err){
+            res.json(Results.ERR_DB_ERR);
+            console.log(err);
+            return;
+        }
+    );
+};
+
+/**
+ * get hot questions list
+ */
+exports.getHotQuestList = function(req, res, next) {
+    questDao.findHot().then(
+         function(quests){
+            if (!quests.length) {
+                res.json(Results.ERR_NOTFOUND_ERR);
+                return;
+            } else {    
+                res.json({
+                    result: true,
+                    data: quests
+                });
+                return;
+            }
+        }
+    ).catch(
+        function(err){
+            res.json(Results.ERR_DB_ERR);
+            console.log(err);
+            return;
+        }
+    );    
 };
 
 /**
@@ -175,37 +162,39 @@ exports.getHotQuestList = function(req, res, next) {
 exports.addViewerNum = function(req, res, next) {
     var epQuest = new EventProxy();
 
-    Quest.findById(req.param('quest_id'),
-        function(err, quest) {
-            if (err) {
+    epQuest.all("findQuest", function(quest) {
+        quest.view_num = Library.addNum(quest.view_num, 1);
+        questDao.save(quest).then(
+             function(quest){
+                res.json({
+                    result: true
+                });
+             }
+        ).catch(
+            function(err){
                 res.json(Results.ERR_DB_ERR);
+                console.log(err);
                 return;
-            } else if (quest == null) {
+            }
+        );
+    });
+
+    questDao.findById(req.param('quest_id')).then(
+         function(quest){
+            if (quest == null) {
                 res.json(Results.ERR_NOTFOUND_ERR);
                 return;
             } else {
                 epQuest.emit("findQuest", quest);
             }
-        });
-
-    epQuest.all("findQuest", function(quest) {
-
-        quest.view_num = Library.addNum(quest.view_num, 1);
-        quest.save(function(err, quest) {
-
-            if (err) {
-                console.log(err);
-                return next();
-            } else {
-
-                res.json({
-                    result: true
-                });
-
-            }
-        });
-    });
-
+        }
+    ).catch(
+        function(err){
+            res.json(Results.ERR_DB_ERR);
+            console.log(err);
+            return;
+        }
+    );
 };
 
  

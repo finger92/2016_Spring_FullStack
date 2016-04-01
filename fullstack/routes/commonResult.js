@@ -49,9 +49,11 @@ var Results = {
     ERR_EXISTED_EMAIL: {
         result: false,
         err: 'ERR_EXISTED_EMAIL'
+    },
+    ERR_ALREADY_VOTED: {
+        result: false,
+        err: 'ERR_ALREADY_VOTED'
     }
-
-
 };
 
 

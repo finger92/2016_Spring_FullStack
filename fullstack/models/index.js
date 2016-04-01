@@ -15,9 +15,11 @@ require('./user.js');
 require('./quest.js');
 require('./answ.js');
 require('./comnt.js');
+require('./vote.js');
 
 exports.Admin = mongoose.model('Admin');
 exports.User = mongoose.model('User');
 exports.Quest = mongoose.model('Quest');
 exports.Answ = mongoose.model('Answ');
 exports.Comnt = mongoose.model('Comnt');
+exports.Vote = mongoose.model('Vote');
