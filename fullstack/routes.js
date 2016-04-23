@@ -19,19 +19,19 @@ module.exports = function(app) {
     // question
     app.post('/postQuest', sign.ensureAuthenticated, questRoute.postQuest);
     app.get('/getQuestList', questRoute.getQuestList);
-    app.get('/getQuestById', questRoute.getQuestById);
-    app.get('/getQuestByUserId', sign.ensureAuthenticated, questRoute.getQuestByUserId);
+    app.get('/getQuestById/:quest_id', questRoute.getQuestById);
+    app.get('/getQuestByUserId/:u_id', sign.ensureAuthenticated, questRoute.getQuestByUserId);
     app.get('/getHotQuestList', questRoute.getHotQuestList);
     app.put('/addViewerNum', questRoute.addViewerNum);
     
     // answer
     app.post('/postAnsw', sign.ensureAuthenticated, answRoute.postAnsw);
-    app.get('/getAnswList', answRoute.getAnswList);
+    app.get('/getAnswList/:quest_id', answRoute.getAnswList);
     app.put('/voteAnsw', sign.ensureAuthenticated, answRoute.voteAnsw);
     
     // comment
     app.post('/postComnt', sign.ensureAuthenticated, comntRoute.postComnt);
-    app.get('/getComntList', comntRoute.getComntList);
+    app.get('/getComntList/:answ_id', comntRoute.getComntList);
     
     // admin
     app.post('/admin', adminRoute.createAdmin);

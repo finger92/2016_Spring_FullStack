@@ -212,7 +212,7 @@ exports.changePwd = function(req, res, next) {
         );
     });
     
-    userDao.findById(req.param("u_id")).then(
+    userDao.findById(req.user.id).then(
         function(user){
             if (user == null) {
                 res.json(Results.ERR_NOTFOUND_ERR);
