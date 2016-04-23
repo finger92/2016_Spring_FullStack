@@ -30,6 +30,7 @@ exports.login = function(req, res, next) {
 
             return res.json({
                 id: user.id,
+                username: user.username,
                 result: true
             });
 
