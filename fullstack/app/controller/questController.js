@@ -15,7 +15,7 @@ fakesoApp.controller('QuestListController', function($scope,$state,$window, requ
     getQuestList = function(){
         requestService.GetQuestList(function(res){
             if(res.result){
-                //console.log(res);
+                console.log(res);
                 $scope.qsts = res.data;
                 console.log($scope.qsts);
             }else{
@@ -47,12 +47,11 @@ fakesoApp.controller('QuestController',function($scope,$state,$window,$statePara
     }
     $scope.asws;
     //console.log($stateParams.qstId);
-    requestService.GetQuestById({quest_id:$stateParams.qstId},function(res){
+    requestService.GetQuestById({id:$stateParams.qstId},function(res){
         console.log(res);
         if(res.result){
-            console.log(res);
             $scope.quest = res.data;
-            requestService.GetAnswList({quest_id:$stateParams.qstId},function(res){
+            requestService.GetAnswList({id:$stateParams.qstId},function(res){
                 console.log(res);
                 if(res.result)
                 {
@@ -96,7 +95,14 @@ fakesoApp.controller('QuestPostController',function($scope,$state,$window, reque
     $scope.doPostPst = function(){
         requestService.PostQuest($scope.quest,function(res){
             console.log(res);
-            $state.go('questlist');
+            if(res.result){
+                $state.go('questlist');
+            }
+            else{
+                if(res.err="ERR_REQUIRELOGIN_ERR")
+                    $window.alert("Please Login first!");
+                    //console.log("required");
+            }
         });
     };
 });

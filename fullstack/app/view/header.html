@@ -1,4 +1,4 @@
-<nav class="navbar navbar-inverse navbar-fixed-top">
+<nav class="navbar navbar-inverse navbar-fixed-top" ng-controller="AccountController">
   <div class="container">
     <div class="navbar-header">
       <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
@@ -13,8 +13,10 @@
         <ul class="nav navbar-nav">
             <li><a href="#/postqst">Post Q</a></li>
             <li><a href="#/quests">All Q</a></li>
-            <li><a href="#/signup">Sign up</a></li>
-            <li><a href="#/login">Sign in</a></li>
+            <li ng-hide="isLogged()"><a href="#/signup">Sign up</a></li>
+            <li ng-hide="isLogged()"><a href="#/login">Sign in</a></li>
+            <li ng-show="isLogged()"><a href="#">{{username}}</a></li>
+            <li ng-show="isLogged()"><a href="#" ng-click="doLogout()">Log out</a></li>
         </ul>
       <form class="navbar-form navbar-right">
         <div class="form-group">

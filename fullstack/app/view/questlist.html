@@ -14,38 +14,17 @@
 
     <div class="col-sm-8 blog-main">
 
-      <div class="blog-post">
-        <h2 class="blog-post-title"><a href="#/quest/test">Qustion 1</a></h2>
+      <div class="blog-post" ng-repeat="qst in qsts">
+        <h2 class="blog-post-title" ng-click='goQst(qst._id)'><a>{{qst.title}}</a></h2>
         <p class="blog-post-meta">
-            <span>January 1, 2014 by <a href="#">Mark</a></span>
-            <span class="pull-right">level  17</span>
+            <span>{{qst.create_time | date:"MM/dd/yyyy"}} by <a href="#">{{qst.u_name}}</a></span>
+            <span class="pull-right">level  {{qst.u_level}}</span>
         </p>
           <hr>
-        <p>This blog post shows a few different types of content that's supported and styled with Bootstrap. Basic typography, images, and code are all supported.</p>
           
       </div><!-- /.blog-post -->
         
-      <div class="blog-post">
-        <h2 class="blog-post-title">Qustion 2</h2>
-        <p class="blog-post-meta">
-            <span>January 1, 2014 by <a href="#">Mark</a></span>
-            <span class="pull-right">level  17</span>
-        </p>
-          <hr>
-        <p>This blog post shows a few different types of content that's supported and styled with Bootstrap. Basic typography, images, and code are all supported.</p>
-          
-      </div><!-- /.blog-post -->
-        
-      <div class="blog-post">
-        <h2 class="blog-post-title">Qustion 3</h2>
-        <p class="blog-post-meta">
-            <span>January 1, 2014 by <a href="#">Mark</a></span>
-            <span class="pull-right">level  17</span>
-        </p>
-          <hr>
-        <p>This blog post shows a few different types of content that's supported and styled with Bootstrap. Basic typography, images, and code are all supported.</p>
-          
-      </div><!-- /.blog-post -->
+
 
 <!--分页
         <nav class="text-center">
@@ -70,7 +49,7 @@
 -->
         <hr>
         
-        <form class="form-horizontal">
+        <form class="form-horizontal" ng-controller="QuestPostController">
               <div class="form-group">
                 <label for="inputTitle" class="col-sm-2 control-label">Title</label>
                 <div class="col-sm-10">
@@ -85,8 +64,7 @@
               </div>
               <div class="form-group">
                 <div class="col-sm-offset-2 col-sm-10">
-                  <button type="submit" class="btn btn-default pull-right">cancel</button>
-                  <button type="submit" class="btn btn-default pull-right postqst-button">post</button>    
+                  <button type="submit" class="btn btn-default pull-right postqst-button"   ng-click="doPostPst()">post</button>    
                 </div>
               </div>
             </form>
@@ -100,7 +78,7 @@
       <div class="sidebar-module">
         <h4>Top questions</h4>
         <ol class="list-unstyled">
-          <li><a href="#">q1</a></li>
+          <li><a href="#">{{tqst.u_name}}</a></li>
           <li><a href="#">q2</a></li>
           <li><a href="#">q3</a></li>
         </ol>

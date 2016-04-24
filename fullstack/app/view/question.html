@@ -32,26 +32,26 @@ Post answer:
     <div class="col-sm-8 blog-main">
 
       <div class="blog-post">
-        <h2 class="blog-post-title">Qustion 1</h2>
+        <h2 class="blog-post-title">{{quest.title}}</h2>
         <p class="blog-post-meta">
-            <span>January 1, 2014 by <a href="#">Mark</a></span>
-            <span class="pull-right">level  17</span>
+            <span>{{quest.create_time | date:"MM/dd/yyyy"}} by <a href="#">{{quest.u_name}}</a></span>
+            <span class="pull-right">level  {{quest.u_level}}</span>
         </p>
           <hr>
-        <p>This blog post shows a few different types of content that's supported and styled with Bootstrap. Basic typography, images, and code are all supported.</p>
+        <p>{{quest.content}}</p>
           
         <p class="text-right">
             <button type="button" class="btn btn-default">answer</button>
         </p>
       </div><!-- /.blog-post -->
-           
-      <div class="blog-post">
-          
-        <blockquote>
-            <p>Curabitur blandit tempus porttitor. <strong>Nullam quis risus eget urna mollis</strong> ornare vel eu leo. Nullam id dolor id nibh ultricies vehicula ut id elit.</p>
         
-            <p class="blog-post-meta text-right">Answered by <a href="#">Jacob (level 2) </a></p>
-            <p class="blog-post-meta text-right">December 23, 2013</p>
+      <div class="blog-post" ng-controller="AswController">
+        <div ng-repeat="aws in anws">
+        <blockquote>
+            <p>{{aws.content}}</p>
+        
+            <p class="blog-post-meta text-right">Answered by <a href="#">{{aws.u_name}} (level {{aws.u_level}}) </a></p>
+            <p class="blog-post-meta text-right">{{aws.create_time | date:"MM/dd/yyyy"}}</p>
             <p class="blog-post-meta text-right">
                 <label class="radio-inline">
                   <input type="radio" name="rateStar" id="rateStar1" value=1> 1
@@ -73,90 +73,31 @@ Post answer:
         </blockquote>
         <hr>
 
-        <div class="qst-comt">
-            <p class="qst-comt-fs">Curabitur blandit tempus porttitor Curabitur blandit tempus porttitor Curabitur blandit tempus porttitor</p>
-            <p class="text-right">Commented by<a href="#">Jacob (level 2)</a></p>
-            <p class="blog-post-meta text-right">December 23, 2013</p>
-        </div>
-        <div class="qst-comt">
-            <p class="qst-comt-fs">Curabitur blandit tempus porttitor Curabitur blandit tempus porttitor Curabitur blandit tempus porttitor</p>
-            <p class="text-right">Commented by<a href="#">Jacob (level 2)</a></p>
-            <p class="blog-post-meta text-right">December 23, 2013</p>
-        </div>
-        <p class="text-right" ng-if="readyReply==false">
-            <button type="button" class="btn btn-default" ng-click="showReplyPanel()">reply</button>
-        </p>
-          <form class="form-horizontal" ng-if="readyReply==true">
-              <div class="form-group">
-                <div class="col-sm-offset-2 col-sm-10">
-                    <textarea class="form-control" rows="5" placeholder="Content" ng-model="quest.content"></textarea>
-                </div>
-              </div>
-              <div class="form-group">
-                <div class="col-sm-offset-2 col-sm-10">
-                  <button type="submit" class="btn btn-default pull-right" ng-click="hideReplyPanel()">cancel</button>
-                  <button type="submit" class="btn btn-default pull-right postqst-button">post</button>    
-                </div>
-              </div>
-          </form>
-        
-      </div><!-- /.blog-post -->
-        
-      <div class="blog-post">
-          
-        <blockquote>
-            <p>Curabitur blandit tempus porttitor. <strong>Nullam quis risus eget urna mollis</strong> ornare vel eu leo. Nullam id dolor id nibh ultricies vehicula ut id elit.</p>
-        
-            <p class="blog-post-meta text-right">Answered by <a href="#">Jacob (level 2) </a></p>
-            <p class="blog-post-meta text-right">December 23, 2013</p>
-            <p class="blog-post-meta text-right">
-                <label class="radio-inline">
-                  <input type="radio" name="rateStar" id="rateStar1" value=1> 1
-                </label>
-                <label class="radio-inline">
-                  <input type="radio" name="rateStar" id="rateStar2" value=2> 2
-                </label>
-                <label class="radio-inline">
-                  <input type="radio" name="rateStar" id="rateStar3" value=3> 3
-                </label>
-                <label class="radio-inline">
-                  <input type="radio" name="rateStar" id="rateStar4" value=4> 4
-                </label>
-                <label class="radio-inline">
-                  <input type="radio" name="rateStar" id="rateStar5" value=5> 5
-                </label>&nbsp;
-                <button type="button" class="btn btn-default">rate</button>
+        <div ng-controller="CommentController">
+            {{cmts}}99
+            <div class="qst-comt">
+                <p class="qst-comt-fs">{{comment}}88</p>
+                <p class="text-right">Commented by<a href="#">Jacob (level 2)</a></p>
+                <p class="blog-post-meta text-right">December 23, 2013</p>
+            </div>
+            <p class="text-right" ng-if="readyReply==false">
+                <button type="button" class="btn btn-default" ng-click="showReplyPanel()">reply</button>
             </p>
-        </blockquote>
-        <hr>
-
-        <div class="qst-comt">
-            <p class="qst-comt-fs">Curabitur blandit tempus porttitor Curabitur blandit tempus porttitor Curabitur blandit tempus porttitor</p>
-            <p class="text-right">Commented by<a href="#">Jacob (level 2)</a></p>
-            <p class="blog-post-meta text-right">December 23, 2013</p>
+              <form class="form-horizontal" ng-if="readyReply==true">
+                  <div class="form-group">
+                    <div class="col-sm-offset-2 col-sm-10">
+                        <textarea class="form-control" rows="5" placeholder="Content" ng-model="comment.content"></textarea>
+                    </div>
+                  </div>
+                  <div class="form-group">
+                    <div class="col-sm-offset-2 col-sm-10">
+                      <button type="submit" class="btn btn-default pull-right" ng-click="hideReplyPanel()">cancel</button>
+                      <button type="submit" class="btn btn-default pull-right postqst-button" ng-click="doCmtPost()">post</button>    
+                    </div>
+                  </div>
+              </form>
+          </div>
         </div>
-        <div class="qst-comt">
-            <p class="qst-comt-fs">Curabitur blandit tempus porttitor Curabitur blandit tempus porttitor Curabitur blandit tempus porttitor</p>
-            <p class="text-right">Commented by<a href="#">Jacob (level 2)</a></p>
-            <p class="blog-post-meta text-right">December 23, 2013</p>
-        </div>
-        <p class="text-right" ng-if="readyReply==false">
-            <button type="button" class="btn btn-default" ng-click="showReplyPanel()">reply</button>
-        </p>
-          <form class="form-horizontal" ng-if="readyReply==true">
-              <div class="form-group">
-                <div class="col-sm-offset-2 col-sm-10">
-                    <textarea class="form-control" rows="5" placeholder="Content" ng-model="quest.content"></textarea>
-                </div>
-              </div>
-              <div class="form-group">
-                <div class="col-sm-offset-2 col-sm-10">
-                  <button type="submit" class="btn btn-default pull-right" ng-click="hideReplyPanel()">cancel</button>
-                  <button type="submit" class="btn btn-default pull-right postqst-button">post</button>    
-                </div>
-              </div>
-          </form>
-        
       </div><!-- /.blog-post -->
 
 <!--分页
@@ -182,17 +123,16 @@ Post answer:
 -->
         <hr>
         
-        <form class="form-horizontal">
+        <form class="form-horizontal" ng-controller="AswPostController">
           <h2>Your Answer:</h2>
           <div class="form-group">
             <div class="col-sm-offset-2 col-sm-10">
-                <textarea class="form-control" rows="5" placeholder="Content" ng-model="quest.content"></textarea>
+                <textarea class="form-control" rows="5" placeholder="Content" ng-model="answer.content"></textarea>
             </div>
           </div>
           <div class="form-group">
             <div class="col-sm-offset-2 col-sm-10">
-              <button type="submit" class="btn btn-default pull-right">cancel</button>
-              <button type="submit" class="btn btn-default pull-right postqst-button">post</button>    
+              <button type="submit" class="btn btn-default pull-right postqst-button" ng-click="doPost()">post</button>    
             </div>
           </div>
         </form>
