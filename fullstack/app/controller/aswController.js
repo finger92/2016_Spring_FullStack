@@ -12,6 +12,10 @@ fakesoApp.controller('AswController', function($scope,$state,$window,$stateParam
         answ_id: '',
         content: '',
     };
+    $scope.rate = {
+        answ_id: '',
+        vote: '',
+    };
     $scope.comments = [];
     
 //    console.log($stateParams);
@@ -49,6 +53,21 @@ fakesoApp.controller('AswController', function($scope,$state,$window,$stateParam
             if(res.result){
                 $state.reload();
             }else{
+                if(res.err="ERR_REQUIRELOGIN_ERR")
+                    $window.alert("Please Login first!");
+                else    console.log(res);
+            }
+        });
+    };
+    
+    $scope.rateAnsw = function(aid){
+        console.log(aid);
+        $scope.rate.answ_id = aid;
+        requestService.VoteAnsw($scope.rate, function(res){
+            if(res.result)
+                $state.reload();
+            else{
+                console.log(res);
                 if(res.err="ERR_REQUIRELOGIN_ERR")
                     $window.alert("Please Login first!");
                 else    console.log(res);
