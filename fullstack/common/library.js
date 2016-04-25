@@ -41,7 +41,7 @@ exports.rankAnswList = function(answlist){
     var result = new Array();
     var weight = new Array();
     
-    if(answlist.length == 0) return new Array();
+    if(answlist.length == 0) return result;
     if(answlist.length == 1) return answlist;
     
     var init = answlist[0];
@@ -60,9 +60,9 @@ exports.rankAnswList = function(answlist){
                 n = j;
             }
         }
-        result.push(answlist[n]);
+        result.push({"answ":answlist[n],"weight":weight});
         weight[n] = -1;
     }
-    
+    console.log(result);
     return result;
 }
