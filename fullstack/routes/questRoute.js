@@ -13,6 +13,7 @@ exports.postQuest = function(req, res, next) {
     if (user.id) {
         if(tools.isEmpty(req.param('title')) || tools.isEmpty(req.param('content'))){
             res.json(Results.ERR_PARAM_ERR);
+            console.log(res);
             return;
         }
         
@@ -38,6 +39,7 @@ exports.postQuest = function(req, res, next) {
         );
     } else {
         res.json(Results.ERR_REQUIRELOGIN_ERR);
+        console.log(res);
         return;
     }
 };
