@@ -15,6 +15,7 @@ module.exports = function(app) {
     app.get('/getSelf', sign.ensureAuthenticated, userRoute.getSelf);
     app.put('/addExp', sign.ensureAuthenticated, userRoute.addExp);
     app.put('/changePwd', sign.ensureAuthenticated, userRoute.changePwd);
+    app.get('/getTopUsers', userRoute.getTopUsers);
     
     // question
     app.post('/postQuest', sign.ensureAuthenticated, questRoute.postQuest);

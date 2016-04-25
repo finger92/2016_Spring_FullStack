@@ -23,7 +23,7 @@ exports.findByUserId = function(id){
 }
 
 exports.findHot = function(){
-    return query = Quest.find({},'id title content u_name u_level answ_num view_num last_act_time create_time')
+    return Quest.find({},'id title content u_name u_level answ_num view_num last_act_time create_time')
         .sort({
             last_act_time: 'desc'
         }).limit(10).exec();

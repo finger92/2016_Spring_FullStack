@@ -14,4 +14,10 @@ exports.findById = function(id){
     return User.findById(id).exec();
 }
 
+exports.getTopUsers = function(){
+    return User.find({},'id username level create_time')
+        .sort({
+            level: 'desc'
+        }).limit(10).exec();
+}
 

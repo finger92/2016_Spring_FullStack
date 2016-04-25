@@ -230,3 +230,26 @@ exports.changePwd = function(req, res, next) {
         }
     );
 };
+
+exports.getTopUsers = function(req, res, next){
+    userDao.getTopUsers().then(
+         function(users){
+            if (!users.length) {
+                res.json(Results.ERR_NOTFOUND_ERR);
+                return;
+            } else {    
+                res.json({
+                    result: true,
+                    data: users
+                });
+                return;
+            }
+        }
+    ).catch(
+        function(err){
+            res.json(Results.ERR_DB_ERR);
+            console.log(err);
+            return;
+        }
+    );    
+}
