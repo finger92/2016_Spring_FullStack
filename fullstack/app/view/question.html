@@ -54,21 +54,21 @@ Post answer:
             <p class="blog-post-meta text-right">{{aws.create_time | date:"MM/dd/yyyy"}}</p>
             <p class="blog-post-meta text-right">
                 <label class="radio-inline">
-                  <input type="radio" name="rateStar" id="rateStar1" value=1> 1
+                  <input type="radio" name="rateStar" id="rateStar1" value=1 ng-model="rate.vote"> 1
                 </label>
                 <label class="radio-inline">
-                  <input type="radio" name="rateStar" id="rateStar2" value=2> 2
+                  <input type="radio" name="rateStar" id="rateStar2" value=2 ng-model="rate.vote"> 2
                 </label>
                 <label class="radio-inline">
-                  <input type="radio" name="rateStar" id="rateStar3" value=3> 3
+                  <input type="radio" name="rateStar" id="rateStar3" value=3 ng-model="rate.vote"> 3
                 </label>
                 <label class="radio-inline">
-                  <input type="radio" name="rateStar" id="rateStar4" value=4> 4
+                  <input type="radio" name="rateStar" id="rateStar4" value=4 ng-model="rate.vote"> 4
                 </label>
                 <label class="radio-inline">
-                  <input type="radio" name="rateStar" id="rateStar5" value=5> 5
+                  <input type="radio" name="rateStar" id="rateStar5" value=5 ng-model="rate.vote"> 5
                 </label>&nbsp;
-                <button type="button" class="btn btn-default">rate</button>
+                <button type="button" class="btn btn-default" ng-click="rateAnsw(aws.id)">rate</button>
             </p>
         </blockquote>
         <hr>
@@ -91,7 +91,7 @@ Post answer:
                   <div class="form-group">
                     <div class="col-sm-offset-2 col-sm-10">
                       <button type="submit" class="btn btn-default pull-right" ng-click="hideReplyPanel()">cancel</button>
-                      <button type="submit" class="btn btn-default pull-right postqst-button" ng-click="doCmtPost(aws._id)">post</button>    
+                      <button type="submit" class="btn btn-default pull-right postqst-button" ng-click="doCmtPost(aws.id)">post</button>    
                     </div>
                   </div>
               </form>
@@ -145,9 +145,7 @@ Post answer:
       <div class="sidebar-module">
         <h4>Top questions</h4>
         <ol class="list-unstyled">
-          <li><a href="#">q1</a></li>
-          <li><a href="#">q2</a></li>
-          <li><a href="#">q3</a></li>
+          <li ng-repeat="topQst in topQsts | limitTo : 3"><a ng-click='goQst(topQst._id)' href="#">{{topQst.title}}</a></li>
         </ol>
       </div>
       <div class="sidebar-module">

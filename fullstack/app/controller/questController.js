@@ -1,5 +1,6 @@
 fakesoApp.controller('QuestListController', function($scope,$state,$window, requestService, userService){
     $scope.qsts;
+    $scope.topQsts;
     $scope.quest = {
         title: '',
         content: '',
@@ -12,21 +13,41 @@ fakesoApp.controller('QuestListController', function($scope,$state,$window, requ
         create_time: '',
     };
     
-    getQuestList = function(){
-        requestService.GetQuestList(function(res){
+    requestService.GetQuestList(function(res){
+        if(res.result){
+            console.log(res);
+            $scope.qsts = res.data;
+            console.log($scope.qsts);
+        }else{
+        }
+    });
+    
+    requestService.GetHotQuestList(function(res){
+        console.log(res);
+        if(res.result){
+            $scope.topQsts = res.data;
+        }else{
+        }
+    });
+    
+    requestService.GetHotQuestList(function(res){
+        console.log(res);
+        if(res.result){
+            $scope.topQsts = res.data;
+        }else{
+        }
+    });
+    
+    $scope.goQst = function(qstID){
+        requestService.AddViewerNum({quest_id: qstID}, function(res){
             if(res.result){
                 console.log(res);
-                $scope.qsts = res.data;
-                console.log($scope.qsts);
             }else{
             }
         });
-    };
-    getQuestList();
-    
-    $scope.goQst = function(qstID){
         $state.go('quest',{qstId:qstID});
-    }
+    };
+    
 });
 
 fakesoApp.controller('QuestController',function($scope,$state,$window,$stateParams, requestService, userService){
@@ -45,6 +66,15 @@ fakesoApp.controller('QuestController',function($scope,$state,$window,$statePara
     $scope.newasw = {
         content: '',
     }
+    $scope.topQsts;
+    requestService.GetHotQuestList(function(res){
+        console.log(res);
+        if(res.result){
+            $scope.topQsts = res.data;
+        }else{
+        }
+    });
+    
     $scope.asws;
     //console.log($stateParams.qstId);
     requestService.GetQuestById({id:$stateParams.qstId},function(res){
@@ -76,6 +106,16 @@ fakesoApp.controller('QuestController',function($scope,$state,$window,$statePara
                 $state.reload();
             }
         });
+    };
+    
+    $scope.goQst = function(qstID){
+        requestService.AddViewerNum({quest_id: qstID}, function(res){
+            if(res.result){
+                console.log(res);
+            }else{
+            }
+        });
+        $state.go('quest',{qstId:qstID});
     };
     
     $scope.showReplyPanel = function(){

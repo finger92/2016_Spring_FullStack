@@ -78,9 +78,7 @@
       <div class="sidebar-module">
         <h4>Top questions</h4>
         <ol class="list-unstyled">
-          <li><a href="#">{{tqst.u_name}}</a></li>
-          <li><a href="#">q2</a></li>
-          <li><a href="#">q3</a></li>
+          <li ng-repeat="topQst in topQsts | limitTo : 3"><a ng-click='goQst(topQst._id)' href="#">{{topQst.title}}</a></li>
         </ol>
       </div>
       <div class="sidebar-module">
