@@ -48,11 +48,11 @@ fakesoApp.controller('QuestController',function($scope,$state,$window,$statePara
     $scope.asws;
     //console.log($stateParams.qstId);
     requestService.GetQuestById({id:$stateParams.qstId},function(res){
-        console.log(res);
+//        console.log(res);
         if(res.result){
             $scope.quest = res.data;
             requestService.GetAnswList({id:$stateParams.qstId},function(res){
-                console.log(res);
+//                console.log(res);
                 if(res.result)
                 {
                     $scope.asws = res.data;

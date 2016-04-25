@@ -7,35 +7,36 @@ fakesoApp.controller('AswController', function($scope,$state,$window,$stateParam
         vote: '',
         create_time: '',
     };
-    $scope.anws;
+    $scope.answs = [];
     $scope.comment = {
         answ_id: '',
         content: '',
     };
     $scope.comments = [];
     
-    console.log($stateParams);
+//    console.log($stateParams);
     $scope.getAnws = function(){
-        requestService.GetAnswList({id:$stateParams.qstId},function(res){
-            //console.log(quest_id);
-            if(res.result){
-                //console.log($scope.anws,0);
-                $scope.anws = res.data;
-                //console.log($scope.anws.length,"zz");
+        requestService.GetAnswList({id:$stateParams.qstId},function(answ_res){
+            if(answ_res.result){
+                console.log(answ_res.data);
                 //get comment of each answer
-                for(var i = 0; i < $scope.anws.length; i++){
-                    //console.log($scope.comments,$scope.anws,"z0");
-                    requestService.GetComntList({id:$scope.anws[i]._id},function(rest){
-                        //console.log(quest_id);
-                        //console.log(res);
-                        if(res.result){
-                            $scope.comments.push(rest.data);
+                angular.forEach(answ_res.data,function(key){
+                    requestService.GetComntList({id:key._id},function(comt_res){
+                        if(comt_res.result){
+                            var answ = {
+                                content:key.content,
+                                create_time:key.create_time,
+                                u_level:key.u_level,
+                                u_name:key.u_name,
+                                vote:key.vote,
+                                comnts:comt_res.data
+                            }
+                            $scope.answs.push(answ);
                             //console.log($scope.comments,"z");
                         }else{
-                            //console.log(res);
                         }
                     });
-                }
+                });
             }else{
 
             }
@@ -47,7 +48,7 @@ fakesoApp.controller('AswController', function($scope,$state,$window,$stateParam
     $scope.doCmtPost = function(aid){
         //console.log($scope.answer);
         $scope.comment.answ_id = aid;
-        console.log($scope.comment);
+//        console.log($scope.comment);
         requestService.PostComnt($scope.comment, function(res){
             console.log(res);
             if(res.result){

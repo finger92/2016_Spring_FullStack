@@ -46,7 +46,7 @@ Post answer:
       </div><!-- /.blog-post -->
         
       <div class="blog-post" ng-controller="AswController">
-        <div ng-repeat="aws in anws">
+        <div ng-repeat="aws in answs">
         <blockquote>
             <p>{{aws.content}}</p>
         
@@ -73,11 +73,11 @@ Post answer:
         </blockquote>
         <hr>
 
-        <div>{{comments}}
-            <div class="qst-comt" ng-repeat="cmt in comments[$index]">
+        <div>
+            <div class="qst-comt" ng-repeat="cmt in aws.comnts">
                 <p class="qst-comt-fs">{{cmt.content}}</p>
                 <p class="text-right">Commented by<a href="#">{{cmt.u_name}} (level {{cmt.u_level}})</a></p>
-                <p class="blog-post-meta text-right">{{cmt.create_time | date:'mm/dd/yyyy'}}</p>
+                <p class="blog-post-meta text-right">{{cmt.create_time | date:'MM/dd/yyyy'}}</p>
             </div>
             <p class="text-right" ng-if="readyReply==false">
                 <button type="button" class="btn btn-default" ng-click="showReplyPanel()">reply</button>
