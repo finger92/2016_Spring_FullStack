@@ -12,7 +12,7 @@ exports.postQuest = function(req, res, next) {
     var user = req.user;
     if (user.id) {
         if(tools.isEmpty(req.param('title')) || tools.isEmpty(req.param('content'))){
-            res.json({"err":"err_param","result":false})
+            res.json(Results.ERR_PARAM_ERR);
             console.log('16.'+res);
             return;
         }
