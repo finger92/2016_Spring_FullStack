@@ -63,6 +63,6 @@ exports.rankAnswList = function(answlist){
         result.push({"answ":answlist[n],"weight":weight[n]});
         weight[n] = -1;
     }
-    console.log(result);
+//    console.log(result);
     return result;
 }
