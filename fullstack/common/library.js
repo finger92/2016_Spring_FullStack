@@ -60,7 +60,7 @@ exports.rankAnswList = function(answlist){
                 n = j;
             }
         }
-        result.push({"answ":answlist[n],"weight":weight});
+        result.push({"answ":answlist[n],"weight":weight[n]});
         weight[n] = -1;
     }
     console.log(result);
