@@ -16,7 +16,7 @@ exports.ensureAuthenticated = function(req, res, next) {
 	console.log("session");
 
 	res.json(Results.ERR_REQUIRELOGIN_ERR);
-    console.log(res);
+    console.log(res.err);
 	return;
 	// res.redirect('/login');
 

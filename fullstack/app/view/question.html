@@ -46,12 +46,12 @@ Post answer:
       </div><!-- /.blog-post -->
         
       <div class="blog-post" ng-controller="AswController">
-        <div ng-repeat="aws in answs">
+        <div ng-repeat="aws in answs | orderBy:aws.weight ">
         <blockquote>
-            <p>{{aws.content}}</p>
+            <p>{{aws.answ.content}}</p>
         
-            <p class="blog-post-meta text-right">Answered by <a href="#">{{aws.u_name}} (level {{aws.u_level}}) </a></p>
-            <p class="blog-post-meta text-right">{{aws.create_time | date:"MM/dd/yyyy"}}</p>
+            <p class="blog-post-meta text-right">Answered by <a href="#">{{aws.answ.u_name}} (level {{aws.answ.u_level}}) </a></p>
+            <p class="blog-post-meta text-right">{{aws.answ.create_time | date:"MM/dd/yyyy"}}</p>
             <p class="blog-post-meta text-right">
                 <label class="radio-inline">
                   <input type="radio" name="rateStar" id="rateStar1" value=1> 1

@@ -18,22 +18,17 @@ fakesoApp.controller('AswController', function($scope,$state,$window,$stateParam
     $scope.getAnws = function(){
         requestService.GetAnswList({id:$stateParams.qstId},function(answ_res){
             if(answ_res.result){
-                console.log(answ_res.data);
                 //get comment of each answer
-                angular.forEach(answ_res.data,function(key){
-                    requestService.GetComntList({id:key._id},function(comt_res){
+                $scope.answs = answ_res.data;
+                
+                angular.forEach($scope.answs,function(key){
+                    requestService.GetComntList({id:key.answ._id},function(comt_res){
                         if(comt_res.result){
-                            var answ = {
-                                content:key.content,
-                                create_time:key.create_time,
-                                u_level:key.u_level,
-                                u_name:key.u_name,
-                                vote:key.vote,
-                                comnts:comt_res.data
-                            }
-                            $scope.answs.push(answ);
+                            key['comnts'] = comt_res.data
+                            console.log($scope.answs);
                             //console.log($scope.comments,"z");
                         }else{
+                            
                         }
                     });
                 });
