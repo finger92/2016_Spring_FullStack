@@ -73,12 +73,11 @@ Post answer:
         </blockquote>
         <hr>
 
-        <div ng-controller="CommentController">
-            {{cmts}}99
-            <div class="qst-comt">
-                <p class="qst-comt-fs">{{comment}}88</p>
-                <p class="text-right">Commented by<a href="#">Jacob (level 2)</a></p>
-                <p class="blog-post-meta text-right">December 23, 2013</p>
+        <div>{{comments}}
+            <div class="qst-comt" ng-repeat="cmt in comments[$index]">
+                <p class="qst-comt-fs">{{cmt.content}}</p>
+                <p class="text-right">Commented by<a href="#">{{cmt.u_name}} (level {{cmt.u_level}})</a></p>
+                <p class="blog-post-meta text-right">{{cmt.create_time | date:'mm/dd/yyyy'}}</p>
             </div>
             <p class="text-right" ng-if="readyReply==false">
                 <button type="button" class="btn btn-default" ng-click="showReplyPanel()">reply</button>
@@ -92,7 +91,7 @@ Post answer:
                   <div class="form-group">
                     <div class="col-sm-offset-2 col-sm-10">
                       <button type="submit" class="btn btn-default pull-right" ng-click="hideReplyPanel()">cancel</button>
-                      <button type="submit" class="btn btn-default pull-right postqst-button" ng-click="doCmtPost()">post</button>    
+                      <button type="submit" class="btn btn-default pull-right postqst-button" ng-click="doCmtPost(aws._id)">post</button>    
                     </div>
                   </div>
               </form>

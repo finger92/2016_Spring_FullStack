@@ -8,6 +8,12 @@ fakesoApp.controller('AswController', function($scope,$state,$window,$stateParam
         create_time: '',
     };
     $scope.anws;
+    $scope.comment = {
+        answ_id: '',
+        content: '',
+    };
+    $scope.comments = [];
+    
     console.log($stateParams);
     $scope.getAnws = function(){
         requestService.GetAnswList({id:$stateParams.qstId},function(res){
@@ -15,13 +21,44 @@ fakesoApp.controller('AswController', function($scope,$state,$window,$stateParam
             if(res.result){
                 //console.log($scope.anws,0);
                 $scope.anws = res.data;
-                console.log($scope.anws,1);
+                //console.log($scope.anws.length,"zz");
+                //get comment of each answer
+                for(var i = 0; i < $scope.anws.length; i++){
+                    //console.log($scope.comments,$scope.anws,"z0");
+                    requestService.GetComntList({id:$scope.anws[i]._id},function(rest){
+                        //console.log(quest_id);
+                        //console.log(res);
+                        if(res.result){
+                            $scope.comments.push(rest.data);
+                            //console.log($scope.comments,"z");
+                        }else{
+                            //console.log(res);
+                        }
+                    });
+                }
             }else{
 
             }
+           //console.log($scope.comments,"final"); 
         });
     };
     $scope.getAnws();
+
+    $scope.doCmtPost = function(aid){
+        //console.log($scope.answer);
+        $scope.comment.answ_id = aid;
+        console.log($scope.comment);
+        requestService.PostComnt($scope.comment, function(res){
+            console.log(res);
+            if(res.result){
+                $state.reload();
+            }else{
+                if(res.err="ERR_REQUIRELOGIN_ERR")
+                    $window.alert("Please Login first!");
+                else    console.log(res);
+            }
+        });
+    };
 });
 
 fakesoApp.controller('AswPostController', function($scope,$state,$window,$stateParams, requestService, userService){
