@@ -38,7 +38,7 @@ exports.postQuest = function(req, res, next) {
             }
         );
     } else {
-        res.json(Results.ERR_REQUIRELOGIN_ERR);
+//        res.json(Results.ERR_REQUIRELOGIN_ERR);
         console.log('42.'+res.err);
         return;
     }
