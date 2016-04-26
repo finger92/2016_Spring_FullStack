@@ -42,7 +42,7 @@ exports.rankAnswList = function(answlist){
     var weight = new Array();
     
     if(answlist.length == 0) return result;
-    if(answlist.length == 1) return answlist;
+//    if(answlist.length == 1) return answlist;
     
     var init = answlist[0];
     var i = 0;
