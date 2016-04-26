@@ -58,10 +58,10 @@ exports.testRankAnswList = function(test){
     l = Library.rankAnswList(l);
     
 //    test.equal(l,a);
-    test.ok(testUListCont(l[0], a));
-    test.ok(testUListCont(l[1], b));
-    test.ok(testUListCont(l[2], d));
-    test.ok(testUListCont(l[3], c));
+    test.ok(testUListCont(l[0].answ, a));
+    test.ok(testUListCont(l[1].answ, b));
+    test.ok(testUListCont(l[2].answ, d));
+    test.ok(testUListCont(l[3].answ, c));
     test.done();
 }
 
