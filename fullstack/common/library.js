@@ -19,8 +19,8 @@ exports.addNum = function(pre_num, adder){
 
 // calculate the average vote
 exports.addVote = function(pre_vote, vote_num, vote){
-    console.log(pre_vote,vote_num,vote);
-    console.log((pre_vote * vote_num + vote), (vote_num + 1));
+//    console.log(pre_vote,vote_num,vote);
+//    console.log((pre_vote * vote_num + vote), (vote_num + 1));
     return (pre_vote * vote_num + vote)/(vote_num + 1);
 }
 

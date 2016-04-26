@@ -28,7 +28,7 @@ exports.isEmpty = function(val) {
 exports.hasNull = function(data) {
     for (var key in data) {
         if (data[key] == undefined || data[key] == null) {
-            console.log(key);
+//            console.log(key);
             return true;
         }
     }
