@@ -24,14 +24,8 @@ fakesoApp.controller('AswController', function($scope,$state,$window,$stateParam
             if(answ_res.result){
                 //get comment of each answer
                 $scope.answs = answ_res.data;
-                if($scope.answs.answ == undefined)  $scope.answs.answ = $scope.answs;
                 angular.forEach($scope.answs,function(key){
-                    //console.log(key);
-                    var kid;
-                    if(key.answ == undefined)   kid = key._id;
-                    else kid = key.answ._id;
-                    //console.log(kid);
-                    requestService.GetComntList({id:kid},function(comt_res){
+                    requestService.GetComntList({id:key.answ._id},function(comt_res){
                         if(comt_res.result){
                             console.log(comt_res);
                             key['comnts'] = comt_res.data
