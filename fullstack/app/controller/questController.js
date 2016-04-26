@@ -130,12 +130,27 @@ fakesoApp.controller('QuestPostController',function($scope,$state,$window, reque
             console.log(res);
             if(res.result){
                 $state.go('questlist');
+                requestService.GetUser(function(res){
+                    console.log(res);
+                    if(res.result){
+                        $scope.user = res.data;
+                        requestService.AddExp({u_id:$scope.user.id, exp:1},function(uRes){
+                            if(uRes.result){
+                                console.log(uRes);
+                            }else{}
+                        });
+                    }else{
+                    }
+                });
             }
             else{
                 if(res.err=="ERR_REQUIRELOGIN_ERR")
                     $window.alert("Please Login first!");
-                    //console.log("required");
+                console.log(res);
             }
         });
     };
+    $scope.addExp = function(){
+
+    };  
 });

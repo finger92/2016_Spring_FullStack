@@ -46,7 +46,7 @@ Post answer:
       </div><!-- /.blog-post -->
         
       <div class="blog-post" ng-controller="AswController">
-        <div ng-repeat="aws in answs | orderBy:aws.weight ">
+          <div ng-repeat="aws in answs | orderBy:aws.weight ">
         <blockquote>
             <p>{{aws.answ.content}}</p>
         
@@ -68,7 +68,7 @@ Post answer:
                 <label class="radio-inline">
                   <input type="radio" name="rateStar" id="rateStar5" value=5 ng-model="rate.vote"> 5
                 </label>&nbsp;
-                <button type="button" class="btn btn-default" ng-click="rateAnsw(aws.id)">rate</button>
+                <button type="button" class="btn btn-default" ng-click="rateAnsw(aws.answ._id)">rate</button>
             </p>
         </blockquote>
         <hr>

@@ -24,12 +24,18 @@ fakesoApp.controller('AswController', function($scope,$state,$window,$stateParam
             if(answ_res.result){
                 //get comment of each answer
                 $scope.answs = answ_res.data;
-                
+                if($scope.answs.answ == undefined)  $scope.answs.answ = $scope.answs;
                 angular.forEach($scope.answs,function(key){
-                    requestService.GetComntList({id:key.answ._id},function(comt_res){
+                    //console.log(key);
+                    var kid;
+                    if(key.answ == undefined)   kid = key._id;
+                    else kid = key.answ._id;
+                    //console.log(kid);
+                    requestService.GetComntList({id:kid},function(comt_res){
                         if(comt_res.result){
+                            console.log(comt_res);
                             key['comnts'] = comt_res.data
-                            console.log($scope.answs);
+                            //console.log($scope.answs);
                             //console.log($scope.comments,"z");
                         }else{
                             
@@ -88,6 +94,18 @@ fakesoApp.controller('AswPostController', function($scope,$state,$window,$stateP
             console.log(res);
             if(res.result){
                 $state.reload();
+                requestService.GetUser(function(res){
+                    console.log(res);
+                    if(res.result){
+                        $scope.user = res.data;
+                        requestService.AddExp({u_id:$scope.user.id, exp:1},function(uRes){
+                            if(uRes.result){
+                                console.log(uRes);
+                            }else{}
+                        });
+                    }else{
+                    }
+                });
             }else{
                 if(res.err=="ERR_REQUIRELOGIN_ERR")
                     $window.alert("Please Login first!");
