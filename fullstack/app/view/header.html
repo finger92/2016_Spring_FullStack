@@ -15,7 +15,7 @@
             <li><a href="#/quests">All Q</a></li>
             <li ng-hide="isLogged()"><a href="#/signup">Sign up</a></li>
             <li ng-hide="isLogged()"><a href="#/login">Sign in</a></li>
-            <li ng-show="isLogged()"><a href="#">{{username}}</a></li>
+            <li ng-show="isLogged()"><a href="#/user">{{username}}</a></li>
             <li ng-show="isLogged()"><a href="#" ng-click="doLogout()">Log out</a></li>
         </ul>
       <form class="navbar-form navbar-right">

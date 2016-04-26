@@ -31,6 +31,7 @@ fakesoApp.factory('requestService', ['$resource','userService', function($resour
         DoLogin: { method: "POST", params: { dir: "doLogin"} },
         DoLogout: { method: "GET", params: { dir: "doLogout"} },
         GetUser: { method: "GET", params: { dir: "getSelf"} },
+        GetTopUser: { method: "GET", params: { dir: "getTopUsers"} },
         AddExp: { method: "PUT", params: { dir: "addExp"} },
         ChangePwd: { method: "PUT", params: { dir: "changePwd"} },
         PostQuest: { method: "POST", params: { dir: "postQuest"} },

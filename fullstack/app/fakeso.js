@@ -48,4 +48,14 @@ fakesoApp.config(function ($stateProvider, $urlRouterProvider, $httpProvider) {
         templateUrl: '/app/view/post-quest.html',
         controller: 'QuestPostController'
     });
+    $stateProvider.state('user', {
+        url: '/user',
+        templateUrl: '/app/view/user.html',
+        controller: 'UserController'
+    });
+    $stateProvider.state('userlist', {
+        url: '/userlist',
+        templateUrl: '/app/view/userlist.html',
+        controller: 'UserController'
+    });
 });

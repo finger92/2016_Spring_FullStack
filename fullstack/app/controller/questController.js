@@ -30,13 +30,6 @@ fakesoApp.controller('QuestListController', function($scope,$state,$window, requ
         }
     });
     
-    requestService.GetHotQuestList(function(res){
-        console.log(res);
-        if(res.result){
-            $scope.topQsts = res.data;
-        }else{
-        }
-    });
     
     $scope.goQst = function(qstID){
         requestService.AddViewerNum({quest_id: qstID}, function(res){
@@ -139,7 +132,7 @@ fakesoApp.controller('QuestPostController',function($scope,$state,$window, reque
                 $state.go('questlist');
             }
             else{
-                if(res.err="ERR_REQUIRELOGIN_ERR")
+                if(res.err=="ERR_REQUIRELOGIN_ERR")
                     $window.alert("Please Login first!");
                     //console.log("required");
             }

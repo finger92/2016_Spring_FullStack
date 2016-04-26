@@ -53,7 +53,7 @@ fakesoApp.controller('AswController', function($scope,$state,$window,$stateParam
             if(res.result){
                 $state.reload();
             }else{
-                if(res.err="ERR_REQUIRELOGIN_ERR")
+                if(res.err=="ERR_REQUIRELOGIN_ERR")
                     $window.alert("Please Login first!");
                 else    console.log(res);
             }
@@ -68,7 +68,7 @@ fakesoApp.controller('AswController', function($scope,$state,$window,$stateParam
                 $state.reload();
             else{
                 console.log(res);
-                if(res.err="ERR_REQUIRELOGIN_ERR")
+                if(res.err=="ERR_REQUIRELOGIN_ERR")
                     $window.alert("Please Login first!");
                 else    console.log(res);
             }
@@ -89,7 +89,7 @@ fakesoApp.controller('AswPostController', function($scope,$state,$window,$stateP
             if(res.result){
                 $state.reload();
             }else{
-                if(res.err="ERR_REQUIRELOGIN_ERR")
+                if(res.err=="ERR_REQUIRELOGIN_ERR")
                     $window.alert("Please Login first!");
             }
         });
@@ -124,7 +124,7 @@ fakesoApp.controller('CommentController', function($scope,$state,$window,$stateP
             if(res.result){
                 $state.reload();
             }else{
-                if(res.err="ERR_REQUIRELOGIN_ERR")
+                if(res.err=="ERR_REQUIRELOGIN_ERR")
                     $window.alert("Please Login first!");
             }
         });
