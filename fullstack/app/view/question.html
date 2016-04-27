@@ -38,7 +38,7 @@ Post answer:
             <span class="pull-right">level  {{quest.u_level}}</span>
         </p>
           <hr>
-        <p>{{quest.content}}</p>
+        <p ng-bind-html="quest.content"></p>
           
         <p class="text-right">
             <button type="button" class="btn btn-default">answer</button>
@@ -46,11 +46,11 @@ Post answer:
       </div><!-- /.blog-post -->
         
       <div class="blog-post" ng-controller="AswController">
-          <div ng-repeat="aws in answs | orderBy:aws.weight ">
+          <div ng-repeat="aws in answs">
         <blockquote>
-            <p>{{aws.answ.content}}</p>
-        
-            <p class="blog-post-meta text-right">Answered by <a href="#">{{aws.answ.u_name}} (level {{aws.answ.u_level}}) </a></p>
+            <p ng-bind-html="aws.answ.content"></p>
+            <p class="blog-post-meta text-right">vote: {{aws.answ.vote}} | Weight: {{aws.weight}}</p>
+            <p class="blog-post-meta text-right">Answered by {{aws.answ.u_name}} (level {{aws.answ.u_level}})</p>
             <p class="blog-post-meta text-right">{{aws.answ.create_time | date:"MM/dd/yyyy"}}</p>
             <p class="blog-post-meta text-right">
                 <label class="radio-inline">
@@ -68,15 +68,15 @@ Post answer:
                 <label class="radio-inline">
                   <input type="radio" name="rateStar" id="rateStar5" value=5 ng-model="rate.vote"> 5
                 </label>&nbsp;
-                <button type="button" class="btn btn-default" ng-click="rateAnsw(aws.answ._id)">rate</button>
+                <button type="button" class="btn btn-default" ng-click="rateAnsw(aws.answ._id)">vote</button>
             </p>
         </blockquote>
         <hr>
 
         <div>
             <div class="qst-comt" ng-repeat="cmt in aws.comnts">
-                <p class="qst-comt-fs">{{cmt.content}}</p>
-                <p class="text-right">Commented by<a href="#">{{cmt.u_name}} (level {{cmt.u_level}})</a></p>
+                <p class="qst-comt-fs" >{{cmt.content}}</p>
+                <p class="text-right">Commented by {{cmt.u_name}} (level {{cmt.u_level}})</p>
                 <p class="blog-post-meta text-right">{{cmt.create_time | date:'MM/dd/yyyy'}}</p>
             </div>
             <p class="text-right" ng-if="readyReply==false">
@@ -91,7 +91,7 @@ Post answer:
                   <div class="form-group">
                     <div class="col-sm-offset-2 col-sm-10">
                       <button type="submit" class="btn btn-default pull-right" ng-click="hideReplyPanel()">cancel</button>
-                      <button type="submit" class="btn btn-default pull-right postqst-button" ng-click="doCmtPost(aws.id)">post</button>    
+                      <button type="submit" class="btn btn-default pull-right postqst-button" ng-click="doCmtPost(aws.answ._id)">post</button>    
                     </div>
                   </div>
               </form>
@@ -126,7 +126,9 @@ Post answer:
           <h2>Your Answer:</h2>
           <div class="form-group">
             <div class="col-sm-offset-2 col-sm-10">
-                <textarea class="form-control" rows="5" placeholder="Content" ng-model="answer.content"></textarea>
+                <trix-editor angular-trix ng-model="answer.content" style="min-height:200px;background-color:white;"></trix-editor>
+
+<!--                <textarea class="form-control" rows="5" placeholder="Content" ng-model="answer.content"></textarea>-->
             </div>
           </div>
           <div class="form-group">
@@ -151,9 +153,7 @@ Post answer:
       <div class="sidebar-module">
         <h4>Top users</h4>
         <ol class="list-unstyled">
-          <li><a href="#">t</a></li>
-          <li><a href="#">t</a></li>
-          <li><a href="#">t</a></li>
+          <li ng-repeat="user in topUsers"><a href="#">{{user.username}} (level: {{user.level}})</a></li>
         </ol>
       </div>
     </div><!-- /.blog-sidebar -->

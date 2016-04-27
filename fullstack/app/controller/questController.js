@@ -29,7 +29,13 @@ fakesoApp.controller('QuestListController', function($scope,$state,$window, requ
         }else{
         }
     });
-    
+    requestService.GetTopUser(function(res){
+        console.log(res);
+        if(res.result){
+            $scope.topUsers = res.data;
+        }else{
+        }
+    });
     
     $scope.goQst = function(qstID){
         requestService.AddViewerNum({quest_id: qstID}, function(res){
@@ -43,8 +49,9 @@ fakesoApp.controller('QuestListController', function($scope,$state,$window, requ
     
 });
 
-fakesoApp.controller('QuestController',function($scope,$state,$window,$stateParams, requestService, userService){
+fakesoApp.controller('QuestController',function($scope,$state,$sce,$window,$stateParams, requestService, userService){
     $scope.readyReply = false;
+    
     $scope.quest = {
         title: '',
         content: '',
@@ -61,9 +68,16 @@ fakesoApp.controller('QuestController',function($scope,$state,$window,$statePara
     }
     $scope.topQsts;
     requestService.GetHotQuestList(function(res){
-        console.log(res);
+//        console.log(res);
         if(res.result){
             $scope.topQsts = res.data;
+        }else{
+        }
+    });
+    requestService.GetTopUser(function(res){
+//        console.log(res);
+        if(res.result){
+            $scope.topUsers = res.data;
         }else{
         }
     });
@@ -71,14 +85,19 @@ fakesoApp.controller('QuestController',function($scope,$state,$window,$statePara
     $scope.asws;
     //console.log($stateParams.qstId);
     requestService.GetQuestById({id:$stateParams.qstId},function(res){
-//        console.log(res);
+        console.log(res);
         if(res.result){
             $scope.quest = res.data;
+//            console.log(res.data);
+            $scope.quest.content = $sce.trustAsHtml($scope.quest.content);
             requestService.GetAnswList({id:$stateParams.qstId},function(res){
-//                console.log(res);
+                console.log(res);
                 if(res.result)
                 {
                     $scope.asws = res.data;
+//                    angular.forEach($scope.asws,function(key){
+//                        key.answ.content = $sce.trustAsHtml(key.answ.content);
+//                    });
                 }else{
                     
                 }
@@ -92,8 +111,8 @@ fakesoApp.controller('QuestController',function($scope,$state,$window,$statePara
         console.log($stateParams.qstId,$scope.newasw.content);
         requestService.PostAnsw({quest_id:$stateParams.qstId,
                                  content: $scope.newasw.content},function(res){
-            console.log(1);
-            console.log(res);
+//            console.log(1);
+//            console.log(res);
             if(res.result){
                 console.log(res);
                 $state.reload();
@@ -120,6 +139,7 @@ fakesoApp.controller('QuestController',function($scope,$state,$window,$statePara
     };
 });
 fakesoApp.controller('QuestPostController',function($scope,$state,$window, requestService, userService){
+    
     $scope.quest = {
         title: '',
         content: '',

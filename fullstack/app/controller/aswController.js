@@ -1,4 +1,4 @@
-fakesoApp.controller('AswController', function($scope,$state,$window,$stateParams, requestService, userService){
+fakesoApp.controller('AswController', function($scope,$state,$window,$sce,$stateParams, requestService, userService){
     $scope.answer = {
         quest_id: '',
         content: '',
@@ -23,13 +23,15 @@ fakesoApp.controller('AswController', function($scope,$state,$window,$stateParam
         requestService.GetAnswList({id:$stateParams.qstId},function(answ_res){
             if(answ_res.result){
                 //get comment of each answer
+                console.log(answ_res);
                 $scope.answs = answ_res.data;
                 angular.forEach($scope.answs,function(key){
+                    key.answ.content = $sce.trustAsHtml(key.answ.content);
                     requestService.GetComntList({id:key.answ._id},function(comt_res){
                         if(comt_res.result){
                             console.log(comt_res);
                             key['comnts'] = comt_res.data
-                            //console.log($scope.answs);
+//                            console.log($scope.answs);
                             //console.log($scope.comments,"z");
                         }else{
                             
@@ -49,7 +51,7 @@ fakesoApp.controller('AswController', function($scope,$state,$window,$stateParam
         $scope.comment.answ_id = aid;
 //        console.log($scope.comment);
         requestService.PostComnt($scope.comment, function(res){
-            console.log(res);
+//            console.log(res);
             if(res.result){
                 $state.reload();
             }else{
@@ -61,15 +63,17 @@ fakesoApp.controller('AswController', function($scope,$state,$window,$stateParam
     };
     
     $scope.rateAnsw = function(aid){
-        console.log(aid);
+//        console.log(aid);
         $scope.rate.answ_id = aid;
         requestService.VoteAnsw($scope.rate, function(res){
             if(res.result)
                 $state.reload();
             else{
-                console.log(res);
+//                console.log(res);
                 if(res.err=="ERR_REQUIRELOGIN_ERR")
                     $window.alert("Please Login first!");
+                if(res.err=="ERR_ALREADY_VOTED")
+                    $window.alert("You have already voted");
                 else    console.log(res);
             }
         });
@@ -89,13 +93,15 @@ fakesoApp.controller('AswPostController', function($scope,$state,$window,$stateP
             if(res.result){
                 $state.reload();
                 requestService.GetUser(function(res){
-                    console.log(res);
+//                    console.log(res);
                     if(res.result){
                         $scope.user = res.data;
                         requestService.AddExp({u_id:$scope.user.id, exp:1},function(uRes){
                             if(uRes.result){
-                                console.log(uRes);
-                            }else{}
+//                                console.log(uRes);
+                            }else{
+                                
+                            }
                         });
                     }else{
                     }
@@ -114,14 +120,14 @@ fakesoApp.controller('CommentController', function($scope,$state,$window,$stateP
         content: '',
     };
     $scope.comments;
-    console.log($stateParams,"cmt");
+//    console.log($stateParams,"cmt");
     $scope.getCmts = function(){
         requestService.GetComntList({id:$stateParams.qstId},function(res){
             //console.log(quest_id);
             if(res.result){
                 //console.log($scope.anws,0);
                 $scope.cmts = res.data;
-                console.log($scope.comment,1);
+//                console.log($scope.comment,1);
             }else{
 
             }
@@ -130,9 +136,9 @@ fakesoApp.controller('CommentController', function($scope,$state,$window,$stateP
     $scope.getCmts();
     
     $scope.doCmtPost = function(){
-        //console.log($scope.answer);
+        console.log($scope.answer);
         requestService.PostComnt($scope.comment, function(res){
-            console.log(res);
+//            console.log(res);
             if(res.result){
                 $state.reload();
             }else{

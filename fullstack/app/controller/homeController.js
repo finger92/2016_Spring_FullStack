@@ -11,4 +11,21 @@ fakesoApp.controller('HomeController',function($scope, userService, $state, $coo
             }
         });
     }
+    requestService.GetHotQuestList(function(res){
+        console.log(res);
+        if(res.result){
+            $scope.topQsts = res.data;
+        }else{
+        }
+    });
+    requestService.GetTopUser(function(res){
+        console.log(res);
+        if(res.result){
+            $scope.topUsers = res.data;
+        }else{
+        }
+    });
+    $scope.jumpTo = function(id){
+        $state.go('quest',{qstId:id});
+    }
 });

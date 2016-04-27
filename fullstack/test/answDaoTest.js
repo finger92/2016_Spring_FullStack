@@ -18,7 +18,6 @@
         ).catch(
             function(err) {
                 test.ok(false, err);
-                test.done();
             }
         );
     };

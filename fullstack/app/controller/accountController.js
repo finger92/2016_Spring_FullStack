@@ -25,7 +25,7 @@ fakesoApp.controller('AccountController', function($scope,$state,$window,$cookie
     $scope.username = $cookies.username;
     
     $scope.doSignup = function(){
-        console.log($scope.user);
+//        console.log($scope.user);
         var isMatch = $scope.emailpattern.test($scope.user.email);
         if(isMatch)    $scope.emailerr = false;
         else $scope.emailerr = true;
@@ -33,10 +33,10 @@ fakesoApp.controller('AccountController', function($scope,$state,$window,$cookie
         else $scope.psworderr = true;
         if($scope.user.username != undefined) $scope.usererr = false;
         else $scope.user.username = true;
-        console.log($scope.emailerr,$scope.psworderr,$scope.usererr);
+//        console.log($scope.emailerr,$scope.psworderr,$scope.usererr);
         if(!$scope.emailerr && !$scope.psworderr && !$scope.usererr){
             requestService.DoRegister($scope.user,function(res){
-                console.log(res,1);
+//                console.log(res,1);
                 //console.log(res.result);
                 if(res.result){
                     $scope.doLogin();
@@ -57,10 +57,10 @@ fakesoApp.controller('AccountController', function($scope,$state,$window,$cookie
         //console.log($scope.emailerr,$scope.psworderr,1);
         if(!$scope.emailerr && !$scope.psworderr){
             requestService.DoLogin($scope.user,function(res){
-                console.log(res);
+//                console.log(res);
                 if(res.result){
                     $cookies.login = true;
-                    console.log(res.id);
+//                    console.log(res.id);
                     $cookies.userId = res.id;
                     $cookies.username = res.username;
                     $state.go('home');
@@ -72,11 +72,11 @@ fakesoApp.controller('AccountController', function($scope,$state,$window,$cookie
     
     $scope.doLogout = function(){
         requestService.DoLogout(function(){
-            console.log("log out");
+//            console.log("log out");
             $cookies.login = false;
             delete $cookies.userId;
             $state.reload();
-            console.log("log out 1");
+//            console.log("log out 1");
         });
     }
 });
