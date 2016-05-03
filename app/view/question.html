@@ -76,7 +76,7 @@ Post answer:
         <div>
             <div class="qst-comt" ng-repeat="cmt in aws.comnts">
                 <p class="qst-comt-fs" >{{cmt.content}}</p>
-                <p class="text-right">Commented by {{cmt.u_name}} (level {{cmt.u_level}})</p>
+                <p class="text-right">Commented by {{cmt.u_id.username}} (level {{cmt.u_id.level}})</p>
                 <p class="blog-post-meta text-right">{{cmt.create_time | date:'MM/dd/yyyy'}}</p>
             </div>
             <p class="text-right" ng-if="readyReply==false">
