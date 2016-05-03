@@ -34,8 +34,8 @@ Post answer:
       <div class="blog-post">
         <h2 class="blog-post-title">{{quest.title}}</h2>
         <p class="blog-post-meta">
-            <span>{{quest.create_time | date:"MM/dd/yyyy"}} by <a href="#">{{quest.u_name}}</a></span>
-            <span class="pull-right">level  {{quest.u_level}}</span>
+            <span>{{quest.create_time | date:"MM/dd/yyyy"}} by <a href="#">{{quest.u_id.username}}</a></span>
+            <span class="pull-right">level  {{quest.u_id.level}}</span>
         </p>
           <hr>
         <p ng-bind-html="quest.content"></p>
@@ -50,7 +50,7 @@ Post answer:
         <blockquote>
             <p ng-bind-html="aws.answ.content"></p>
             <p class="blog-post-meta text-right">vote: {{aws.answ.vote}} | Weight: {{aws.weight}}</p>
-            <p class="blog-post-meta text-right">Answered by {{aws.answ.u_name}} (level {{aws.answ.u_level}})</p>
+            <p class="blog-post-meta text-right">Answered by {{aws.answ.u_id.username}} (level {{aws.answ.u_id.level}})</p>
             <p class="blog-post-meta text-right">{{aws.answ.create_time | date:"MM/dd/yyyy"}}</p>
             <p class="blog-post-meta text-right">
                 <label class="radio-inline">
