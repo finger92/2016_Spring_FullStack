@@ -5,7 +5,8 @@ exports.save = function(quest){
 }
 
 exports.findAll = function(){
-    return  Quest.find({}, 'id title u_name u_level answ_num view_num last_act_time create_time')
+    return  Quest.find({}, 'id title u_id answ_num view_num last_act_time create_time')
+        .populate('u_id','username level')
         .sort({
             create_time: 'desc'
         }).exec();
