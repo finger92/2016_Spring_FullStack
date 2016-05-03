@@ -48,7 +48,7 @@ exports.rankAnswList = function(answlist){
     var i = 0;
     
     for(var answ in answlist){
-        weight[answ] = answlist[answ].vote*7+answlist[answ].u_level*3;
+        weight[answ] = answlist[answ].vote*7+answlist[answ].u_id.level*3;
     }
     
     while(answlist.length != result.length){

@@ -17,7 +17,8 @@
       <div class="blog-post" ng-repeat="qst in qsts">
         <h2 class="blog-post-title" ng-click='goQst(qst._id)'><a>{{qst.title}}</a></h2>
         <p class="blog-post-meta">
-            <span class="pull-right">{{qst.create_time | date:"MM/dd/yyyy"}} by <a href="#">{{qst.username}} (level: {{qst.level}})</a></span>
+            <span class="pull-left">{{qst.view_num}} viewed</span>
+            <span class="pull-right">{{qst.create_time | date:"MM/dd/yyyy"}} by <a href="#">{{qst.u_id.username}} (level: {{qst.u_id.level}})</a></span>
         </p>
           <hr>
           

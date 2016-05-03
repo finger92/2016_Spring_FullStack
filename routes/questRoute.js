@@ -20,8 +20,6 @@ exports.postQuest = function(req, res, next) {
         quest.title = req.param('title');
         quest.content = req.param('content');
         quest.u_id = user.id;
-        quest.u_name = user.username;
-        quest.u_level = user.level;
         questDao.save(quest).then(
              function(quest){
                 res.json({
@@ -80,17 +78,7 @@ exports.getQuestById = function(req, res, next) {
             } else {
                 res.json({
                     result: true,
-                    data: {
-                        id: quest.id,
-                        title: quest.title,
-                        content: quest.content,
-                        u_name: quest.u_name,
-                        u_level: quest.u_level,
-                        answ_num: quest.answ_num,
-                        view_num: quest.view_num,
-                        last_act_time: quest.last_act_time,
-                        create_time: quest.create_time
-                    }
+                    data: quest
                 });
                 return;
             };

@@ -43,16 +43,16 @@ exports.testAddVote = function(test){
 exports.testRankAnswList = function(test){
     
     // weight = 3.7
-    var a = {u_level:3, vote:4};
+    var a = {u_id:{level:3}, vote:4};
     
     // weight = 3.2
-    var b = {u_level:6, vote:2};
+    var b = {u_id:{level:6}, vote:2};
     
     // weight = 3
-    var c = {u_level:3, vote:3};
+    var c = {u_id:{level:3}, vote:3};
     
     // weight = 3
-    var d = {u_level:3, vote:3};
+    var d = {u_id:{level:3}, vote:3};
     
     var l = [b, d, c, a];
     l = Library.rankAnswList(l);
@@ -66,7 +66,7 @@ exports.testRankAnswList = function(test){
 }
 
 function testUListCont(actual, expect){
-    if(actual.u_level == expect.u_level &
+    if(actual.u_id.level == expect.u_id.level &
         actual.vote == expect.vote){
         return true;
     }

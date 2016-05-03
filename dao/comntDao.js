@@ -5,7 +5,7 @@ exports.save = function(comnt){
 }
 
 exports.findByAnswId = function(answ_id){
-    return  Comnt.find({answ_id:answ_id},  'id content u_name u_level create_time').exec();
+    return  Comnt.find({answ_id:answ_id},  'id content u_id create_time').populate('u_id','username level').exec();
 }
 
 

@@ -15,14 +15,6 @@ var AnswSchema = new Schema({
         type: Schema.ObjectId,
 		ref: 'User' 
     },
-    
-	u_name: {
-		type: String
-	},
-    
-    u_level: {
-        type: Number
-    },
 	
 	vote: {
 		type: Number,

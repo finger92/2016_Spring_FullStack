@@ -17,8 +17,6 @@ exports.postComnt = function(req, res, next) {
         comnt.answ_id = answ_id;
         comnt.content = req.param('content');
         comnt.u_id = user.id;
-        comnt.u_name = user.username;
-        comnt.u_level = user.level;
         comntDao.save(comnt).then(
              function(comnt){
                 res.json({

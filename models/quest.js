@@ -15,13 +15,13 @@ var QuestSchema = new Schema({
 		ref: 'User' 
     },
     
-	u_name: {
-		type: String
-	},
-    
-    u_level: {
-        type: Number
-    },
+//	u_name: {
+//		type: String
+//	},
+//    
+//    u_level: {
+//        type: Number
+//    },
 	
 	answ_num: {
 		type: Number,

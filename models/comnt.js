@@ -16,14 +16,6 @@ var ComntSchema = new Schema({
 		ref: 'User' 
     },
     
-	u_name: {
-		type: String
-	},
-    
-    u_level: {
-        type: Number
-    },
-    
     create_time:{
         type: Date,
         default: Date.now
