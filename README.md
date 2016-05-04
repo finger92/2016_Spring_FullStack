@@ -1,19 +1,19 @@
 # 2016_Spring_FullStack
 
-dir:
-  app: contain all the frontend code, in the preview we use apache as the frontend server
-  common: contain tools functions and bussiness logic
-  dao: dao layer, use mongoose as ORM
-  model: entity classes
-  routes: webapi layer
-  test: unit tests
+dir:<br>
+    app: contain all the frontend code, in the preview we use apache as the frontend server<br>
+    common: contain tools functions and bussiness logic<br>
+    dao: dao layer, use mongoose as ORM<br>
+    model: entity classes<br>
+    routes: webapi layer<br>
+    test: unit tests<br>
 
-preview: 
-  http://ec2-52-36-23-134.us-west-2.compute.amazonaws.com/#/home
+preview: <br>
+    http://ec2-52-36-23-134.us-west-2.compute.amazonaws.com/#/home<br>
 
-environment require: 
-  nodejs 
+environment require: <br>
+    nodejs <br>
 
-usage:  
-  npm install 
-  npm start
+usage:<br>
+    npm install<br> 
+    npm start<br>
