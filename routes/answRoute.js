@@ -55,6 +55,7 @@ exports.postAnsw = function(req, res, next) {
         answ.quest_id = quest_id;
         answ.content = req.param('content');
         answ.u_id = user.id;
+        answ.ulevel = user.level;
         answDao.save(answ).then(
              function(answ){
                 ep.emit("changeLastAction");

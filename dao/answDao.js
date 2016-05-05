@@ -9,7 +9,7 @@ exports.findById = function(id){
 }
 
 exports.findByQuestId = function(quest_id){
-    return  Answ.find({quest_id:quest_id}, 'id content u_id vote create_time').populate('u_id','username level').exec();
+    return  Answ.find({quest_id:quest_id}, 'id content u_id ulevel vote create_time').populate('u_id','username level').exec();
 }
 
 
